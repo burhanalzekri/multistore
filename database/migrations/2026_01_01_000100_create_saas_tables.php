@@ -96,7 +96,7 @@ return new class extends Migration {
 
         Schema::create('sms_inbox', function (Blueprint $t) {
             $t->id();
-            $t->foreignId('shop_id')->constrained()->cascadeOnDelete();
+            $t->unsignedBigInteger('shop_id')->nullable();
             $t->string('sender_phone');
             $t->text('raw_body');
             $t->decimal('parsed_amount', 12, 2)->nullable();
