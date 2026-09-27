@@ -8,7 +8,11 @@ echo "════════════════════════�
 
 # ═══ 1) Migrations ═══
 echo "🗄️ Migrations..."
-php artisan migrate --force --no-interaction 2>&1 || echo "⚠️ تحذير في migrate"
+php artisan migrate --force --no-interaction 2>&1 || echo "⚠️ تحذير في migrate — نتجاوز"
+
+# ═══ 1.5) Seeder (مناطق الشحن — آمن للتكرار) ═══
+echo "🌱 Seeding shipping zones..."
+php artisan db:seed --class=ShippingZonesSeeder --force 2>&1 || echo "⚠️ تحذير في seed — نتجاوز"
 
 # ═══ 2) Caching ═══
 echo "⚡ Cache..."
@@ -20,14 +24,12 @@ php artisan view:cache || true
 echo "🔗 Storage link..."
 php artisan storage:link || true
 
-# ═══ 4) Apache على منفذ 10000 (Render) ═══
+# ═══ 4) Apache ═══
+echo "✅ تشغيل Apache على منفذ 80..."
+
+# نستخدم منفذ 10000 (Render default)
 PORT="${PORT:-10000}"
-echo "✅ تشغيل Apache على منفذ $PORT..."
-
-# نُحدّث Ports
-sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf
-
-# نُحدّث VirtualHost
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g" /etc/apache2/sites-available/000-default.conf
+sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf 2>/dev/null || true
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g" /etc/apache2/sites-available/000-default.conf 2>/dev/null || true
 
 exec apache2-foreground
