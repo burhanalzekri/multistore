@@ -746,3 +746,20 @@ Route::get('/api/shop-stats', function (\Illuminate\Http\Request $req) {
 // ═══════════════════════════════════════════════════════════
 Route::get('/landing', [\App\Http\Controllers\LandingController::class, 'index'])
     ->name('landing.index');
+
+// ═══════════════════════════════════════════════════════════
+// 🚚 مناطق الشحن
+// ═══════════════════════════════════════════════════════════
+Route::middleware('auth')->prefix('dashboard')->group(function () {
+    Route::get('/shipping-zones', [\App\Http\Controllers\ShippingZoneController::class, 'index'])->name('shipping-zones.index');
+    Route::get('/shipping-zones/create', [\App\Http\Controllers\ShippingZoneController::class, 'create'])->name('shipping-zones.create');
+    Route::post('/shipping-zones', [\App\Http\Controllers\ShippingZoneController::class, 'store'])->name('shipping-zones.store');
+    Route::get('/shipping-zones/{id}/edit', [\App\Http\Controllers\ShippingZoneController::class, 'edit'])->name('shipping-zones.edit');
+    Route::put('/shipping-zones/{id}', [\App\Http\Controllers\ShippingZoneController::class, 'update'])->name('shipping-zones.update');
+    Route::delete('/shipping-zones/{id}', [\App\Http\Controllers\ShippingZoneController::class, 'destroy'])->name('shipping-zones.destroy');
+    Route::post('/shipping-zones/{id}/toggle', [\App\Http\Controllers\ShippingZoneController::class, 'toggle'])->name('shipping-zones.toggle');
+});
+
+// ═══ API ═══
+Route::get('/api/shipping-zones', [\App\Http\Controllers\ShippingZoneController::class, 'apiList'])->name('api.shipping-zones');
+Route::post('/api/shipping-zones/calculate', [\App\Http\Controllers\ShippingZoneController::class, 'apiCalculate'])->name('api.shipping-zones.calculate');

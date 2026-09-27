@@ -491,6 +491,11 @@
       <span class="admin-nav-badge">{{ $pendingOrders }}</span>
       @endif
     </a>
+
+    <a href="/dashboard/shipping-zones" class="admin-nav-item {{ str_starts_with($route, 'dashboard/shipping-zones') ? 'active' : '' }}">
+      <i data-lucide="truck"></i>
+      <span>مناطق الشحن</span>
+    </a>
     @endif
     <a href="/dashboard/payments" class="admin-nav-item {{ str_starts_with($route, 'dashboard/payments') ? 'active' : '' }}">
       <i data-lucide="wallet"></i>

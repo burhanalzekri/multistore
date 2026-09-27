@@ -412,7 +412,13 @@ class StorefrontController extends Controller
             $total += $price * $qty;
         }
 
-        return view('storefront.checkout', compact('items', 'total', 'shop'));
+        // ✅ مناطق الشحن
+        $zones = \App\Models\ShippingZone::forShop($shop->id)
+            ->active()
+            ->ordered()
+            ->get();
+
+        return view('storefront.checkout', compact('items', 'total', 'shop', 'zones'));
     }
 
     public function placeOrder(Request $request)

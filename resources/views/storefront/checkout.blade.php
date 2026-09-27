@@ -837,6 +837,38 @@
           rows="3"
           placeholder="المدينة، الحي، الشارع، أقرب معلم..."
           class="co-textarea">{{ old('customer_address') }}</textarea>
+
+      {{-- 🚚 منطقة التوصيل --}}
+      <div>
+        <label class="co-label">
+          <i data-lucide="map-pin"></i>
+          <span>منطقة التوصيل</span>
+          <span class="co-req">*</span>
+        </label>
+        <select name="zone_id" id="zoneSelect" class="co-input" onchange="updateShipping()" style="cursor:pointer;">
+          <option value="">اختر منطقتك...</option>
+          @if(isset($zones))
+            @foreach($zones as $zone)
+              <option value="{{ $zone->id }}" 
+                      data-fee="{{ $zone->fee }}"
+                      data-max="{{ $zone->max_order_amount ?? '' }}">
+                {{ $zone->name }}
+                @if((float)$zone->fee === 0.0)
+                  — 🎁 مجاني
+                @else
+                  — {{ number_format($zone->fee) }} ر.ي
+                @endif
+                @if($zone->eta)
+                  ({{ $zone->eta }})
+                @endif
+              </option>
+            @endforeach
+          @endif
+        </select>
+        <div id="shippingDisplay" style="display:none;"></div>
+      </div>
+
+
         <i data-lucide="map-pin" class="co-input-icon" style="top:14px;transform:none;"></i>
       </div>
     </div>
@@ -933,41 +965,92 @@
 <input type="hidden" name="shipping_fee" id="shippingFee" value="0">
 </form>
 
-<script>lucide.createIcons();</script>
 <script>
-function updateShipping() {
-    const zone = document.getElementById("zoneSelect").value;
+window.updateShipping = function() {
+    const select = document.getElementById("zoneSelect");
+    if (!select) return;
+
+    const zone = select.value;
     const totalText = document.querySelector("[data-order-total]")?.textContent || "0";
     const total = parseInt(totalText.replace(/[^\d]/g, "")) || 0;
 
-    fetch("/api/shipping/calculate", {
+    const feeInput = document.getElementById("shippingFee");
+    let feeEl = document.getElementById("shippingDisplay");
+    if (!feeEl) {
+        feeEl = document.createElement("div");
+        feeEl.id = "shippingDisplay";
+        select.closest("div").after(feeEl);
+    }
+
+    if (!zone) {
+        feeEl.style.display = "none";
+        feeInput.value = 0;
+        if (window.recalcFinalTotal) window.recalcFinalTotal();
+        return;
+    }
+
+    feeEl.style.display = "block";
+    feeEl.style.cssText = "padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:#f3f4f6;color:#6b7280;border:1px solid #e5e7eb;";
+    feeEl.innerHTML = "&#9203; جاري حساب الشحن...";
+
+    const csrfToken = document.querySelector("input[name=_token]")?.value || document.querySelector("meta[name=csrf-token]")?.content;
+
+    fetch("/api/shipping-zones/calculate", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": document.querySelector("input[name=_token]")?.value },
-        body: JSON.stringify({ zone, total })
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRF-TOKEN": csrfToken,
+            "X-Requested-With": "XMLHttpRequest"
+        },
+        body: JSON.stringify({ zone_id: parseInt(zone) || 0, total: total })
     })
     .then(r => r.json())
     .then(data => {
-        document.getElementById("shippingFee").value = data.fee;
-        let feeEl = document.getElementById("shippingDisplay");
-        if (!feeEl) {
-            feeEl = document.createElement("div");
-            feeEl.id = "shippingDisplay";
-            feeEl.style.cssText = "background:#dbeafe;color:#1d4ed8;padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;";
-            document.getElementById("zoneSelect").closest("div").after(feeEl);
+        if (!data.success) {
+            feeEl.style.cssText = "padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;";
+            feeEl.innerHTML = "&#9888; " + (data.message || "تعذر حساب الشحن");
+            feeInput.value = 0;
+            if (window.recalcFinalTotal) window.recalcFinalTotal();
+            return;
         }
-        if (data.free_shipping) {
-            feeEl.innerHTML = "🎉 <b>شحن مجاني!</b> (فوق 50,000 ريال)";
-            feeEl.style.background = "#dcfce7";
-            feeEl.style.color = "#15803d";
-        } else {
-            feeEl.innerHTML = "🚚 <b>الشحن:</b> " + data.fee.toLocaleString() + " ريال (" + data.zone_name + ")";
-            feeEl.style.background = "#dbeafe";
-            feeEl.style.color = "#1d4ed8";
+
+        if (data.requires_quote) {
+            feeInput.value = 0;
+            feeEl.style.cssText = "padding:14px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:linear-gradient(135deg,#fff7ed,#fed7aa);color:#9a3412;border:2px dashed #fdba74;";
+            feeEl.innerHTML = "&#128222; <b>سيتواصل معك فريقنا</b><br><span style='font-size:12px;font-weight:700;opacity:.9;'>طلبك كبير — سنُحدد تكلفة الشحن الإضافية ونُبلغك قريباً</span>";
         }
+        else if (data.free_shipping) {
+            feeInput.value = 0;
+            feeEl.style.cssText = "padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#15803d;border:1px solid #86efac;";
+            feeEl.innerHTML = "&#127881; <b>شحن مجاني!</b> <span style='font-size:12px;opacity:.9;'>(" + (data.zone_name || '') + ")</span>";
+        }
+        else {
+            feeInput.value = data.fee || 0;
+            feeEl.style.cssText = "padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#1e40af;border:1px solid #93c5fd;";
+            feeEl.innerHTML = "&#128666; <b>الشحن:</b> " + (data.fee || 0).toLocaleString() + " ريال <span style='font-size:12px;opacity:.9;'>(" + (data.zone_name || '') + (data.eta ? " • " + data.eta : "") + ")</span>";
+        }
+
+        if (window.recalcFinalTotal) window.recalcFinalTotal();
+    })
+    .catch(err => {
+        console.error("Shipping error:", err);
+        feeEl.style.cssText = "padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:800;font-size:14px;background:#fee2e2;color:#991b1b;border:1px solid #fca5a5;";
+        feeEl.innerHTML = "&#9888; تعذر الاتصال بالخادم";
+        feeInput.value = 0;
+        if (window.recalcFinalTotal) window.recalcFinalTotal();
     });
-}
-setTimeout(updateShipping, 500);
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.lucide) lucide.createIcons();
+    const select = document.getElementById("zoneSelect");
+    if (select && select.value) {
+        setTimeout(window.updateShipping, 300);
+    }
+});
 </script>
+
 
   {{-- 🔔 التنبيهات --}}
   @include('components.toast')
