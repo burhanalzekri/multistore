@@ -790,7 +790,123 @@
             </div>
         @endif
 
-<form method="POST" action="/login">
+      {{-- 🎮 بطاقة بيانات الدخول التجريبي --}}
+      <div class="demo-credentials-card" style="
+          background: linear-gradient(135deg, #eff6ff, #dbeafe);
+          border: 2px dashed #60a5fa;
+          border-radius: 16px;
+          padding: 16px 18px;
+          margin-bottom: 20px;
+          position: relative;
+          overflow: hidden;
+      ">
+          <div style="
+              position: absolute;
+              top: -30px;
+              left: -30px;
+              width: 100px;
+              height: 100px;
+              background: rgba(96, 165, 250, 0.15);
+              border-radius: 50%;
+          "></div>
+          <div style="position: relative; z-index: 1;">
+              <div style="
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  margin-bottom: 12px;
+                  font-weight: 900;
+                  font-size: 14px;
+                  color: #1e40af;
+              ">
+                  <span style="font-size: 18px;">🎮</span>
+                  <span>تجربة سريعة — دخول تجريبي</span>
+              </div>
+              <div style="
+                  background: #fff;
+                  border-radius: 12px;
+                  padding: 12px 14px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 8px;
+              ">
+                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px;">
+                      <span style="color: #6b7280; font-weight: 700;">📧 البريد:</span>
+                      <code style="
+                          font-family: 'Courier New', monospace;
+                          font-weight: 900;
+                          color: #1e40af;
+                          background: #eff6ff;
+                          padding: 3px 8px;
+                          border-radius: 6px;
+                          font-size: 11.5px;
+                      ">demo@multistore.ye</code>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px;">
+                      <span style="color: #6b7280; font-weight: 700;">🔑 كلمة المرور:</span>
+                      <code style="
+                          font-family: 'Courier New', monospace;
+                          font-weight: 900;
+                          color: #1e40af;
+                          background: #eff6ff;
+                          padding: 3px 8px;
+                          border-radius: 6px;
+                          font-size: 11.5px;
+                      ">demo123</code>
+                  </div>
+              </div>
+              <button type="button" onclick="fillDemoLogin()" style="
+                  width: 100%;
+                  margin-top: 10px;
+                  padding: 10px;
+                  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                  color: #fff;
+                  border: 0;
+                  border-radius: 10px;
+                  font-weight: 900;
+                  font-size: 12.5px;
+                  cursor: pointer;
+                  font-family: inherit;
+                  transition: all .2s;
+                  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+              ">
+                  🚀 ملء البيانات والدخول
+              </button>
+          </div>
+      </div>
+
+      {{-- JavaScript --}}
+      <script>
+      window.fillDemoLogin = function() {
+          var emailInput = document.querySelector('input[name="email"]');
+          var passInput = document.querySelector('input[name="password"]');
+          
+          if (emailInput && passInput) {
+              emailInput.value = 'demo@multistore.ye';
+              passInput.value = 'demo123';
+              
+              // تأثير بصري
+              emailInput.style.transition = 'all 0.3s';
+              emailInput.style.background = '#fef3c7';
+              passInput.style.transition = 'all 0.3s';
+              passInput.style.background = '#fef3c7';
+              
+              setTimeout(function() {
+                  emailInput.style.background = '';
+                  passInput.style.background = '';
+              }, 1000);
+              
+              // التمرير للزر
+              var submitBtn = document.querySelector('button[type="submit"]');
+              if (submitBtn) {
+                  submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  submitBtn.style.animation = 'pulse 0.8s ease 2';
+              }
+          }
+      };
+      </script>
+
+      <form method="POST" action="/login">
           @csrf
 
           <div class="field">
