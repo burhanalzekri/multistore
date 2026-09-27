@@ -78,7 +78,7 @@ class SmartDashboardController extends Controller
                 DB::raw("COUNT(DISTINCT orders.customer_phone) as customer_count"),
                 DB::raw("COUNT(*) as order_count"))
             ->groupBy("order_items.product_name")
-            ->having("customer_count", ">", 1)
+            ->havingRaw("COUNT(DISTINCT orders.customer_phone) > 1")
             ->orderBy("customer_count", "desc")
             ->take(5)
             ->get();
