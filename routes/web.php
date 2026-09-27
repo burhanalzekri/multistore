@@ -20,7 +20,8 @@ use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 // ═══ Storefront ═══
-Route::get('/', [StorefrontController::class, 'index']);
+// 🏠 Landing Page — الصفحة الرئيسية التسويقية
+Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('home');
 Route::get('/shop', [StorefrontController::class, 'index']);
 Route::post('/coupon/validate', [\App\Http\Controllers\CouponController::class, 'validate_coupon'])->name('coupon.validate');
 // ═══ 🎁 برنامج الولاء (العميل) ═══
