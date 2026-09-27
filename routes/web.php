@@ -310,13 +310,6 @@ Route::middleware("auth")->prefix("dashboard")->group(function () {
     Route::post("/settings/smtp/test", [App\Http\Controllers\SmtpSettingsController::class, "test"]);
 });
 
-// ═══ مسار تبديل المتجر (للتطوير) ═══
-Route::get('/switch-shop/{shopId}', function ($shopId) {
-    $shop = \App\Models\Shop::findOrFail($shopId);
-    session(['preferred_shop_id' => $shop->id]);
-    app(\App\Services\Tenant\TenantManager::class)->set($shop);
-    return redirect('/shop')->with('success', 'تم التبديل إلى: ' . $shop->name);
-})->name('switch.shop');
 
 // ═══ عرض المتاجر المتاحة ═══
 Route::get('/shops', function () {
@@ -330,13 +323,6 @@ Route::get('/shops', function () {
     return $html;
 })->name('shops.list');
 
-// ═══ تبديل المتجر (للتطوير) ═══
-Route::get('/switch-shop/{id}', function ($id) {
-    $shop = \App\Models\Shop::findOrFail($id);
-    session(['preferred_shop_id' => $shop->id]);
-    app(\App\Services\Tenant\TenantManager::class)->set($shop);
-    return redirect('/shop')->with('success', 'تم التبديل إلى: ' . $shop->name);
-})->name('switch.shop');
 
 Route::get('/shops', function () {
     $shops = \App\Models\Shop::all();
