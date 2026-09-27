@@ -426,6 +426,18 @@ Route::get('/demo', function () {
                 ]);
             }
 
+            // ✅ إنشاء مستخدم تجريبي مرتبط بالمتجر
+            \App\Models\User::create([
+                'shop_id' => $demoShop->id,
+                'name' => 'مدير المتجر التجريبي',
+                'email' => 'demo@multistore.ye',
+                'password' => \Hash::make('demo123'),
+                'role' => 'shop_admin',
+                'phone' => '777000000',
+            ]);
+
+            \Log::info('✅ تم إنشاء مستخدم تجريبي: demo@multistore.ye');
+
             \Log::info('✅ تم إنشاء متجر تجريبي: ' . $demoShop->name);
 
         } catch (\Throwable $e) {
@@ -440,6 +452,40 @@ Route::get('/demo', function () {
 
     return redirect('/demo-shop');
 });
+
+// ═══ 🎮 دخول تجريبي تلقائي إلى لوحة التحكم ═══
+Route::get('/demo-dashboard', function () {
+    // ابحث عن المستخدم التجريبي
+    $demoUser = \App\Models\User::where('email', 'demo@multistore.ye')->first();
+
+    // إذا لم يوجد ← أنشئه
+    if (!$demoUser) {
+        $demoShop = \App\Models\Shop::where('slug', 'like', 'demo-shop-%')
+            ->orWhere('name', 'like', '%تجريبي%')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if (!$demoShop) {
+            return redirect('/demo')->with('error', 'المتجر التجريبي غير متاح');
+        }
+
+        $demoUser = \App\Models\User::create([
+            'shop_id' => $demoShop->id,
+            'name' => 'مدير المتجر التجريبي',
+            'email' => 'demo@multistore.ye',
+            'password' => \Hash::make('demo123'),
+            'role' => 'shop_admin',
+            'phone' => '777000000',
+        ]);
+    }
+
+    // دخول تلقائي
+    \Auth::login($demoUser, true);
+    session(['preferred_shop_id' => $demoUser->shop_id]);
+    session(['is_demo_mode' => true]);
+
+    return redirect('/dashboard')->with('status', '🎮 مرحباً بك في وضع المتجر التجريبي');
+})->name('demo.dashboard');
 
 Route::get('/demo-shop', function () {
     $demoShopId = session('demo_shop_id');

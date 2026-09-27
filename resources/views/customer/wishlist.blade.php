@@ -34,7 +34,7 @@
     <div class="bg-white rounded-2xl overflow-hidden shadow-sm group">
       <a href="/product/{{ $p->id }}" class="block aspect-square bg-gradient-to-br from-amber-100 to-orange-50 overflow-hidden">
         @if($p->image)
-          <img src="{{ Storage::url($p->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition">
+          <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" class="w-full h-full object-cover group-hover:scale-110 transition">
         @else
           <div class="w-full h-full flex items-center justify-center text-5xl">📦</div>
         @endif

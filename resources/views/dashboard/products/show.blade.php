@@ -12,7 +12,7 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
       <div>
         @if($product->image)
-          <img src="{{ Storage::url($product->image) }}" style="width:100%;border-radius:12px;">
+          <img src="{{ ($product->image_url ?? Storage::url($product->image)) }}" style="width:100%;border-radius:12px;">
         @endif
       </div>
       <div>

@@ -791,7 +791,7 @@ window.addEventListener('afterprint', () => {
       <a href="/product/{{ $p->id }}" style="background:#fafbfc;border:1px solid #f1f5f9;border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:all 0.3s;display:block;">
         <div style="aspect-ratio:1;background:linear-gradient(135deg,#ede9fe,#ddd6fe);position:relative;overflow:hidden;">
           @if($p->image)
-            <img src="{{ Storage::url($p->image) }}" style="width:100%;height:100%;object-fit:cover;">
+            <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" style="width:100%;height:100%;object-fit:cover;">
           @else
             <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:42px;">📦</div>
           @endif

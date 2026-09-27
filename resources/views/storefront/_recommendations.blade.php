@@ -18,7 +18,7 @@
     <a href="/product/{{ $p->id }}" class="admin-card" style="text-decoration:none;color:inherit;display:block;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 40px rgba(139,92,246,0.15)';" onmouseout="this.style.transform='';this.style.boxShadow='var(--shadow-sm)';">
       <div style="aspect-ratio:1;background:linear-gradient(135deg,#ede9fe,#ddd6fe);position:relative;overflow:hidden;">
         @if($p->image)
-          <img src="{{ Storage::url($p->image) }}" style="width:100%;height:100%;object-fit:cover;">
+          <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" style="width:100%;height:100%;object-fit:cover;">
         @else
           <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;">📦</div>
         @endif

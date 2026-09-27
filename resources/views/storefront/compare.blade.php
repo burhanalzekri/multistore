@@ -21,7 +21,7 @@
               <th style="padding:16px;text-align:center;border-bottom:2px solid #e5e7eb;min-width:200px;">
                 <a href="/product/{{ $p->id }}" style="text-decoration:none;color:inherit;">
                   @if($p->image)
-                    <img src="{{ Storage::url($p->image) }}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-bottom:8px;">
+                    <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" style="width:100px;height:100px;object-fit:cover;border-radius:12px;margin-bottom:8px;">
                   @endif
                   <div style="font-weight:900;font-size:14px;">{{ $p->name }}</div>
                 </a>

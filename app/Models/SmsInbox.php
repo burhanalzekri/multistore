@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SmsInbox extends Model {
     use BelongsToTenant;
+
+    protected $table = 'sms_inbox';
     protected $guarded = [];
     protected $casts = ['received_at' => 'datetime'];
 

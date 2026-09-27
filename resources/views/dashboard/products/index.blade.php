@@ -38,7 +38,7 @@
          onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
 
       @if($p->image)
-        <img src="{{ Storage::url($p->image) }}" alt="{{ $p->name }}" style="width:100%;height:100%;object-fit:cover;">
+        <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" alt="{{ $p->name }}" style="width:100%;height:100%;object-fit:cover;">
       @else
         <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:64px;">📦</div>
       @endif

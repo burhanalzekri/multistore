@@ -1166,7 +1166,16 @@ $minPrice = request('min_price');
 $maxPrice = request('max_price');
 @endphp
 
-<div class="topline"><div class="wrap"><span>تسوق بسهولة من متجرك المفضل</span><b>{{ $shopName }}</b><span>منتجات مختارة بعناية</span></div></div>
+<div class="topline"><div class="wrap">
+  <span>تسوق بسهولة من متجرك المفضل</span>
+  <b>{{ $shopName }}</b>
+  <span>منتجات مختارة بعناية</span>
+  @if(request()->is('demo-shop*') || str_contains($shopName ?? '', 'تجريبي'))
+    <a href="/demo-dashboard" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;padding:5px 14px;border-radius:99px;font-size:11px;font-weight:900;text-decoration:none;margin-right:auto;display:inline-flex;align-items:center;gap:5px;box-shadow:0 4px 12px rgba(139,92,246,0.3);transition:all .2s;">
+      🎮 لوحة التحكم التجريبية
+    </a>
+  @endif
+</div></div>
 
 <header class="header">
   <div class="wrap head">

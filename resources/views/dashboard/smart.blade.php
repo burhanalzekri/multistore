@@ -156,7 +156,7 @@
     <a href="/dashboard/products/{{ $p->id }}/edit" style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;">
       <div style="width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fef3c7,#fed7aa);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;">
         @if($p->image)
-        <img src="{{ Storage::url($p->image) }}" style="width:100%;height:100%;object-fit:cover;">
+        <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" style="width:100%;height:100%;object-fit:cover;">
         @else
         📦
         @endif
@@ -193,7 +193,7 @@
     <a href="/dashboard/products/{{ $p->id }}/edit" style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;">
       <div style="width:44px;height:44px;border-radius:10px;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;">
         @if($p->image)
-        <img src="{{ Storage::url($p->image) }}" style="width:100%;height:100%;object-fit:cover;">
+        <img src="{{ ($p->image_url ?? Storage::url($p->image)) }}" style="width:100%;height:100%;object-fit:cover;">
         @else
         📦
         @endif

@@ -28,7 +28,7 @@
 
       <div style="position:relative;aspect-ratio:1;background:linear-gradient(135deg,#ede9fe,#ddd6fe);overflow:hidden;">
         @if($rp->image)
-          <img src="{{ Storage::url($rp->image) }}" alt="{{ $rp->name }}" style="width:100%;height:100%;object-fit:cover;">
+          <img src="{{ ($rp->image_url ?? Storage::url($rp->image)) }}" alt="{{ $rp->name }}" style="width:100%;height:100%;object-fit:cover;">
         @else
           <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">📦</div>
         @endif

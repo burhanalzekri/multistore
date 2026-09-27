@@ -53,7 +53,7 @@
 
         @if($r->image)
           <div class="rv-image">
-            <img src="{{ Storage::url($r->image) }}" alt="صورة التقييم" loading="lazy">
+            <img src="{{ ($r->image_url ?? Storage::url($r->image)) }}" alt="صورة التقييم" loading="lazy">
           </div>
         @endif
 

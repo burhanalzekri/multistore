@@ -20,7 +20,7 @@
       <a href="/product/{{ $fs->product->id }}" style="background:white;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 4px 16px rgba(0,0,0,0.15);">
         <div style="aspect-ratio:1;background:linear-gradient(135deg,#fef3c7,#fed7aa);position:relative;overflow:hidden;">
           @if($fs->product->image)
-          <img src="{{ Storage::url($fs->product->image) }}" style="width:100%;height:100%;object-fit:cover;">
+          <img src="{{ ($fs->product->image_url ?? Storage::url($fs->product->image)) }}" style="width:100%;height:100%;object-fit:cover;">
           @else
           <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;">📦</div>
           @endif
