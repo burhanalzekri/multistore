@@ -114,7 +114,7 @@ return new class extends Migration {
             $t->id();
             $t->foreignId('shop_id')->constrained()->cascadeOnDelete();
             $t->foreignId('order_id')->nullable()->constrained()->nullOnDelete();
-            $t->foreignId('sms_inbox_id')->nullable()->constrained()->nullOnDelete();
+            $t->unsignedBigInteger('sms_inbox_id')->nullable();
             $t->string('provider');
             $t->decimal('amount', 12, 2);
             $t->string('sender_phone');
