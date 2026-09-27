@@ -1230,7 +1230,7 @@ $maxPrice = request('max_price');
         @foreach($heroProducts as $i => $hp)
           <div class="hero-product hero-slide {{ $i === 0 ? 'active' : '' }}" data-index="{{ $i }}" style="{{ $i === 0 ? '' : 'opacity:0;position:absolute;inset:0;' }}">
             <a href="/product/{{ $hp->id }}" aria-label="{{ $hp->name }}">
-              <img src="{{ Storage::url($hp->image) }}" alt="{{ $hp->name }}" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+              <img src="{{ $hp->image_url ?? Storage::url($hp->image) }}" alt="{{ $hp->name }}" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
             </a>
           </div>
         @endforeach
@@ -1242,7 +1242,7 @@ $maxPrice = request('max_price');
         </div>
       @elseif($hero && $hero->image)
         <div class="hero-product">
-          <img src="{{ Storage::url($hero->image) }}" alt="{{ $hero->name }}">
+          <img src="{{ $hero->image_url ?? Storage::url($hero->image) }}" alt="{{ $hero->name }}">
         </div>
         <div class="hero-label">اختيارات مميزة من {{ $shopName }}</div>
       @else
@@ -1318,7 +1318,7 @@ $maxPrice = request('max_price');
               @if($disc > 0)<span class="tag sale">-{{ $disc }}%</span>@endif
             </div>
             <a href="/product/{{ $p->id }}" style="display:block;width:100%;height:100%">
-              @if($p->image)<img src="{{ Storage::url($p->image) }}" alt="{{ $p->name }}" loading="lazy">
+              @if($p->image)<img src="{{ $p->image_url ?? ($p->image_url ?? Storage::url($p->image)) }}" alt="{{ $p->name }}" loading="lazy">
               @else<div style="display:grid;place-items:center;height:100%;font-size:50px;opacity:.25">📦</div>@endif
             </a>
           </div>
@@ -1447,7 +1447,7 @@ $maxPrice = request('max_price');
             </div>
             <a href="/product/{{ $p->id }}" style="display:block;width:100%;height:100%">
               @if($p->image)
-                <img src="{{ Storage::url($p->image) }}" alt="{{ $p->name }}" loading="lazy">
+                <img src="{{ $p->image_url ?? ($p->image_url ?? Storage::url($p->image)) }}" alt="{{ $p->name }}" loading="lazy">
               @else
                 <div style="display:grid;place-items:center;height:100%;font-size:50px;opacity:.25">📦</div>
               @endif

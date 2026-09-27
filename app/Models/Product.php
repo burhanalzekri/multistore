@@ -121,4 +121,48 @@ class Product extends Model
             ->values()
             ->toArray();
     }
+
+    /**
+     * 🖼️ Accessor — رابط الصورة الجاهز للعرض
+     * يتعامل مع:
+     * - URLs خارجية (http/https) ← مباشرة
+     * - مسارات محلية ← Storage::url
+     */
+    public function getImageUrlAttribute(): ?string
+    {
+        if (empty($this->image)) {
+            return null;
+        }
+
+        // ✅ URL خارجي ← استخدمه مباشرة
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        // ✅ مسار محلي ← عبر Storage
+        return \Storage::url($this->image);
+    }
+
+    /**
+     * 🖼️ Accessor — أول صورة من images المتعددة (أو image الأساسي)
+     */
+    public function getPrimaryImageUrlAttribute(): ?string
+    {
+        if (!empty($this->image_url)) {
+            return $this->image_url;
+        }
+
+        $images = is_array($this->images) ? $this->images : [];
+        $first = $images[0] ?? null;
+
+        if (!$first) {
+            return null;
+        }
+
+        if (str_starts_with($first, 'http://') || str_starts_with($first, 'https://')) {
+            return $first;
+        }
+
+        return \Storage::url($first);
+    }
 }

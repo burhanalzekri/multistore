@@ -356,15 +356,83 @@ Route::get('/my-shops', [App\Http\Controllers\AuthController::class, 'listShops'
     ->middleware('auth')
     ->name('my.shops');
 
-// ═══ 🎯 المتجر التجريبي ═══
+// ═══ 🎯 المتجر التجريبي — إنشاء تلقائي ═══
 Route::get('/demo', function () {
+    // ابحث عن متجر تجريبي
     $demoShop = \App\Models\Shop::where('slug', 'like', 'demo-shop-%')
         ->orWhere('name', 'like', '%تجريبي%')
         ->orderBy('id', 'desc')
         ->first();
 
+    // ✅ إذا غير موجود — أنشئ متجر تجريبي تلقائياً
     if (!$demoShop) {
-        abort(404, 'المتجر التجريبي غير موجود');
+        try {
+            $demoShop = \App\Models\Shop::create([
+                'name' => 'متجر تجريبي',
+                'slug' => 'demo-shop-' . \Illuminate\Support\Str::random(6),
+                'primary_color' => '#f59e0b',
+                'currency' => 'YER',
+                'locale' => 'ar',
+                'webhook_token' => \Illuminate\Support\Str::random(64),
+                'status' => 'active',
+                'phone' => '777000000',
+                'whatsapp' => '777000000',
+                'country' => 'اليمن',
+                'description' => 'متجر تجريبي لعرض إمكانيات MultiStore',
+            ]);
+
+            // ✅ إضافة تصنيفات تجريبية
+            $categories = [
+                ['name' => 'إلكترونيات', 'slug' => 'electronics'],
+                ['name' => 'ملابس', 'slug' => 'clothing'],
+                ['name' => 'عطور', 'slug' => 'perfumes'],
+            ];
+
+            foreach ($categories as $cat) {
+                \App\Models\Category::create([
+                    'shop_id' => $demoShop->id,
+                    'name' => $cat['name'],
+                    'slug' => $cat['slug'],
+                    'is_active' => true,
+                ]);
+            }
+
+            // ✅ إضافة منتجات تجريبية
+            $products = [
+                ['name' => 'سماعات بلوتوث لاسلكية', 'price' => 8500, 'compare_price' => 12000, 'stock' => 15, 'image' => 'headphones-wireless'],
+                ['name' => 'ساعة ذكية للرياضة', 'price' => 15500, 'compare_price' => 20000, 'stock' => 8, 'image' => 'smartwatch-sport'],
+                ['name' => 'شاحن سريع 65W', 'price' => 3200, 'compare_price' => 4500, 'stock' => 25, 'image' => 'charger-fast'],
+                ['name' => 'قميص رجالي كلاسيكي', 'price' => 4500, 'compare_price' => 6000, 'stock' => 30, 'image' => 'shirt-classic'],
+                ['name' => 'باور بانك 20000mAh', 'price' => 6500, 'compare_price' => 8500, 'stock' => 12, 'image' => 'powerbank-battery'],
+                ['name' => 'كاميرا ويب HD', 'price' => 7800, 'compare_price' => 0, 'stock' => 5, 'image' => 'webcam-camera'],
+                ['name' => 'جاكيت جلد رجالي', 'price' => 18500, 'compare_price' => 25000, 'stock' => 7, 'image' => 'leather-jacket'],
+                ['name' => 'تيشيرت قطني', 'price' => 2500, 'compare_price' => 0, 'stock' => 50, 'image' => 'tshirt-cotton'],
+            ];
+
+            foreach ($products as $p) {
+                // استخدام Picsum للحصول على صور احترافية
+                $imageUrl = 'https://picsum.photos/seed/' . urlencode($p['image']) . '/600/600';
+
+                \App\Models\Product::create([
+                    'shop_id' => $demoShop->id,
+                    'name' => $p['name'],
+                    'slug' => \Illuminate\Support\Str::slug($p['name']) . '-' . \Illuminate\Support\Str::random(4),
+                    'price' => $p['price'],
+                    'compare_price' => $p['compare_price'] > 0 ? $p['compare_price'] : null,
+                    'stock' => $p['stock'],
+                    'is_active' => true,
+                    'description' => 'منتج تجريبي لعرض إمكانيات MultiStore — جودة عالية وسعر مميز',
+                    'image' => $imageUrl,
+                ]);
+            }
+
+            \Log::info('✅ تم إنشاء متجر تجريبي: ' . $demoShop->name);
+
+        } catch (\Throwable $e) {
+            \Log::error('❌ فشل إنشاء المتجر التجريبي: ' . $e->getMessage());
+
+            return redirect('/login')->with('error', 'تعذر تحميل المتجر التجريبي حالياً. حاول مرة أخرى.');
+        }
     }
 
     // احفظ الجلسة للوصول المستقل

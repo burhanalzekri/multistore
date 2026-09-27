@@ -727,7 +727,54 @@
           <p class="form-subtitle">لأصحاب المتاجر والمشرفين</p>
         </div>
 
-        <form method="POST" action="/login">
+                {{-- ═══ عرض الأخطاء ═══ --}}
+        @if ($errors->any())
+            <div style="
+                background: linear-gradient(135deg, #fee2e2, #fecaca);
+                border: 2px solid #f87171;
+                color: #991b1b;
+                padding: 14px 18px;
+                border-radius: 14px;
+                font-weight: 800;
+                font-size: 13.5px;
+                margin-bottom: 18px;
+                display: flex;
+                align-items: flex-start;
+                gap: 10px;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+                animation: shakeError 0.4s ease;
+            ">
+                <span style="font-size: 22px; line-height: 1;">⚠️</span>
+                <div style="flex: 1;">
+                    @foreach ($errors->all() as $error)
+                        <div style="margin-bottom: 4px;">{{ $error }}</div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        {{-- ═══ رسالة النجاح ═══ --}}
+        @if (session('status'))
+            <div style="
+                background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+                border: 2px solid #4ade80;
+                color: #166534;
+                padding: 14px 18px;
+                border-radius: 14px;
+                font-weight: 800;
+                font-size: 13.5px;
+                margin-bottom: 18px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 4px 12px rgba(34, 197, 94, 0.15);
+            ">
+                <span style="font-size: 22px;">✓</span>
+                <div>{{ session('status') }}</div>
+            </div>
+        @endif
+
+<form method="POST" action="/login">
           @csrf
 
           <div class="field">
