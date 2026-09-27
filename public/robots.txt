@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard
+Disallow: /account
+Disallow: /webhooks
+Disallow: /api
+Disallow: /test-mail
+
+Sitemap: https://scroll-titanium-induction-bracelets.trycloudflare.com/sitemap.xml

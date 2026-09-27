@@ -1,0 +1,287 @@
+/* ═══════════════════════════════════════════════════════════════
+   🖨️ Print Styles — تقرير A4 احترافي (مشترك بين كل الصفحات)
+   الاستخدام: أضف كلاس print-report على الـ container الرئيسي
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══ الافتراضي: مخفي على الشاشة ═══ */
+.print-only { display: none; }
+
+/* ═══ عند الطباعة ═══ */
+@media print {
+
+  /* ─── إخفاء العناصر التفاعلية ─── */
+  .no-print,
+  .admin-sidebar,
+  .admin-overlay,
+  .admin-header,
+  .admin-bottom-nav,
+  .admin-menu-btn,
+  .toast-container,
+  #adminMenuBtn,
+  #adminSidebar,
+  #adminOverlay,
+  button,
+  .oa-actions,
+  .va-actions,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* ─── إظهار عناصر الطباعة فقط ─── */
+  .print-only { display: block !important; }
+
+  /* ─── الصفحة والخلفية ─── */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+    line-height: 1.45;
+    font-family: 'Cairo', 'Segoe UI', sans-serif;
+  }
+
+  /* ─── المحتوى الرئيسي ─── */
+  .admin-main { margin: 0 !important; padding: 0 !important; }
+  .print-report {
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* ─── رأس التقرير ─── */
+  .print-header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    border-bottom: 3px double #333;
+    page-break-after: avoid;
+  }
+  .print-header-left { text-align: right; flex: 1; }
+  .print-header-right { text-align: left; font-size: 10pt; color: #444; }
+  .print-title {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #000;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .print-subtitle { font-size: 11pt; color: #555; margin: 0; }
+  .print-meta { margin: 3px 0; }
+  .print-meta strong { color: #000; }
+
+  /* ─── تذييل التقرير (ثابت أسفل كل صفحة) ─── */
+  .print-footer {
+    display: block !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9pt;
+    color: #777;
+    border-top: 1px solid #ccc;
+    padding: 6px 0 0;
+    background: #fff;
+  }
+
+  /* ─── البطاقات ─── */
+  .print-card,
+  .oa-card,
+  .va-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    padding: 12px !important;
+    margin-bottom: 14px !important;
+    background: #fff !important;
+  }
+  .oa-card-title,
+  .va-card-title {
+    font-size: 13pt;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+    color: #000;
+  }
+
+  /* ─── شبكة الإحصائيات ─── */
+  .oa-stats,
+  .va-stats,
+  .print-stats {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 8px !important;
+    page-break-inside: avoid;
+  }
+  .oa-stat,
+  .va-stat,
+  .print-stat {
+    break-inside: avoid;
+    border: 1px solid #ccc !important;
+    padding: 10px !important;
+    background: #fff !important;
+  }
+  .oa-stat-icon,
+  .va-stat-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 16px !important;
+    background: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .oa-stat-value,
+  .va-stat-value { font-size: 14pt !important; }
+  .oa-stat-label,
+  .va-stat-label { font-size: 9pt !important; }
+
+  /* ─── الجداول ─── */
+  .oa-table,
+  .va-table,
+  .print-table {
+    width: 100%;
+    font-size: 10pt;
+    border-collapse: collapse;
+    border: 1px solid #333 !important;
+  }
+  .oa-table th,
+  .va-table th,
+  .print-table th {
+    background: #e5e7eb !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #999 !important;
+    padding: 6px 8px !important;
+    color: #000;
+    font-size: 10pt;
+    font-weight: 800;
+  }
+  .oa-table td,
+  .va-table td,
+  .print-table td {
+    border: 1px solid #ddd !important;
+    padding: 5px 8px !important;
+    font-size: 10pt;
+    color: #000;
+  }
+  .oa-table tr:hover td,
+  .va-table tr:hover td { background: transparent !important; }
+  .oa-table tr,
+  .va-table tr,
+  .print-table tr { page-break-inside: avoid; }
+
+  /* ─── الرسوم البيانية ─── */
+  .oa-charts,
+  .va-charts {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    page-break-inside: avoid;
+  }
+  canvas {
+    max-width: 100% !important;
+    max-height: 220px !important;
+    page-break-inside: avoid;
+  }
+
+  /* ─── الشارات ─── */
+  .va-badge,
+  .print-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #999 !important;
+    padding: 2px 6px !important;
+    font-size: 9pt;
+    border-radius: 4px;
+  }
+
+  /* ─── الروابط ─── */
+  a { color: #000 !important; text-decoration: none !important; }
+
+  /* ─── فواصل الصفحات ─── */
+  .print-page-break { page-break-before: always; }
+  .print-avoid-break { page-break-inside: avoid; }
+
+  /* ─── إعدادات A4 ─── */
+  @page {
+    margin: 12mm 10mm 15mm 10mm;
+    size: A4 portrait;
+  }
+
+  /* ─── الطباعة الملونة (للتقارير الغنية) ─── */
+  .print-color {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════ */
+/* 🖨️ إضافات خاصة — إخفاء الرسوم والقوائم                    */
+/* ═══════════════════════════════════════════════════════════ */
+@media print {
+  /* إخفاء الرسوم البيانية (تُستهلك حبراً — الجداول أوضح) */
+  canvas { 
+    display: none !important; 
+  }
+  .uv-charts,
+  .oa-charts,
+  .va-charts { 
+    display: none !important; 
+  }
+
+  /* إخفاء القوائم المنسدلة */
+  .uv-select,
+  .uv-picker,
+  select {
+    display: none !important;
+  }
+
+  /* إخفاء الأزرار */
+  .uv-btn,
+  .uv-actions,
+  .oa-btn,
+  .oa-actions,
+  .va-btn,
+  .va-actions,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* تحسين المسافات */
+  .uv-wrap,
+  .oa-wrap,
+  .va-wrap {
+    padding: 0 !important;
+  }
+  
+  .uv-card,
+  .oa-card,
+  .va-card {
+    margin-bottom: 12px !important;
+  }
+
+  /* إخفاء التبويبات غير النشطة */
+  .uv-panel {
+    display: block !important;
+    page-break-inside: avoid;
+  }
+  .uv-panel:not(.active) {
+    display: none !important;
+  }
+
+  /* تبويبات أنيقة */
+  .uv-tabs {
+    border-bottom: 2px solid #333 !important;
+    margin-bottom: 15px !important;
+  }
+  .uv-tab {
+    color: #666 !important;
+    font-size: 11pt !important;
+  }
+  .uv-tab.active {
+    color: #000 !important;
+    border-bottom-color: #000 !important;
+  }
+}

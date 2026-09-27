@@ -57,5 +57,9 @@
   @endif
 </div>
 <script>lucide.createIcons();</script>
+
+  {{-- 🔔 التنبيهات --}}
+  @include('components.toast')
+
 </body>
 </html>

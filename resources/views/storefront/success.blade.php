@@ -111,5 +111,10 @@
 </div>
 
 <script>lucide.createIcons();</script>
+
+  {{-- 🔔 التنبيهات --}}
+  @include('components.toast')
+
+@include('components.floating-actions')
 </body>
 </html>

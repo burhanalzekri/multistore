@@ -8,7 +8,7 @@ class User extends Authenticatable {
     use Notifiable;
     protected $guarded = [];
     protected $hidden = ['password','remember_token'];
-    protected $casts = ['password'=>'hashed'];
+    protected $casts = ['password'=>'hashed', 'permissions'=>'array', 'is_active'=>'bool'];
 
     public function shop() { return $this->belongsTo(Shop::class); }
 

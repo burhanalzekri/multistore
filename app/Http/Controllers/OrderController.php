@@ -34,7 +34,29 @@ class OrderController extends Controller
             'status' => 'required|in:awaiting_payment,processing,shipped,delivered,cancelled',
         ]);
 
-        $order->update(['status' => $data['status']]);
+        $oldStatus = $order->status;
+        $newStatus = $data['status'];
+
+        $order->update(['status' => $newStatus]);
+
+        // 📱 إشعارات تغيير الحالة
+        if ($oldStatus !== $newStatus) {
+            try {
+                $shop = \App\Models\Shop::find($order->shop_id);
+                $notifier = app(\App\Services\Notifications\NotificationService::class);
+
+                if ($shop) {
+                    match ($newStatus) {
+                        'shipped' => $notifier->orderShipped($order, $shop, $order->tracking_number),
+                        'delivered' => $notifier->orderDelivered($order, $shop),
+                        'cancelled' => $notifier->orderCancelled($order, $shop),
+                        default => null,
+                    };
+                }
+            } catch (\Throwable $e) {
+                \Log::warning('Status notification failed: ' . $e->getMessage());
+            }
+        }
 
         return back()->with('success', 'تم تحديث حالة الطلب');
     }

@@ -16,5 +16,10 @@
     🚀 أنشئ متجرك
   </a>
 </div>
+
+  {{-- 🔔 التنبيهات --}}
+  @include('components.toast')
+
+@include('components.floating-actions')
 </body>
 </html>

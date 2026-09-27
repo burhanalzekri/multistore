@@ -54,4 +54,57 @@ class CategoryController extends Controller
         $category->delete();
         return redirect('/dashboard/categories')->with('success', 'تم حذف التصنيف');
     }
+
+    /**
+     * إضافة سريعة من نموذج المنتج
+     */
+    public function quickStore(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'icon' => 'nullable|string|max:10',
+        ]);
+
+        $shop = app(\App\Services\Tenant\TenantManager::class)->currentOrFallback();
+        if (!$shop) {
+            return response()->json(['ok' => false, 'message' => 'لا يوجد متجر'], 400);
+        }
+
+        // تحقق من عدم التكرار
+        $existing = \App\Models\Category::withoutGlobalScope('tenant')
+            ->where('shop_id', $shop->id)
+            ->where('name', $data['name'])
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'ok' => true,
+                'category' => [
+                    'id' => $existing->id,
+                    'name' => $existing->name,
+                    'icon' => $existing->icon ?? '📂',
+                ],
+                'message' => 'موجود مسبقاً',
+            ]);
+        }
+
+        $category = \App\Models\Category::create([
+            'shop_id' => $shop->id,
+            'name' => $data['name'],
+            'slug' => \Illuminate\Support\Str::slug($data['name']) . '-' . uniqid(),
+            'icon' => $data['icon'] ?? '📂',
+            'is_active' => true,
+        ]);
+
+        return response()->json([
+            'ok' => true,
+            'category' => [
+                'id' => $category->id,
+                'name' => $category->name,
+                'icon' => $category->icon,
+            ],
+            'message' => 'تمت الإضافة',
+        ]);
+    }
+
 }

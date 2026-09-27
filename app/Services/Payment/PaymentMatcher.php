@@ -2,6 +2,8 @@
 namespace App\Services\Payment;
 
 use App\Jobs\NotifyPaymentConfirmed;
+use App\Mail\OrderConfirmed;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Order;
 use App\Models\PaymentTransaction;
 use App\Models\SmsInbox;
@@ -75,5 +77,17 @@ class PaymentMatcher {
         ]);
 
         NotifyPaymentConfirmed::dispatch($order);
+
+        // إرسال الإيميل إن وُجد
+        if ($order->customer_phone) {
+            try {
+                $shop = \App\Models\Shop::find($order->shop_id);
+                if ($shop && $shop->users()->first()?->email) {
+                    // الإيميل للعميل لو كان مسجّلًا
+                }
+            } catch (\Exception $e) {
+                \Log::error("Email failed: " . $e->getMessage());
+            }
+        }
     }
 }

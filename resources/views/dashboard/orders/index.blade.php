@@ -1,55 +1,64 @@
 @extends('layouts.app')
-
 @section('title', 'الطلبات')
-@section('page-title', '🛒 الطلبات')
+@section('page-title', 'الطلبات')
+@section('page-subtitle', $orders->total() . ' طلب')
 
 @section('content')
 
-<div class="flex flex-wrap gap-2 mb-4 text-sm">
-  <a href="/dashboard/orders" class="px-3 py-1.5 rounded-lg font-bold {{ !request('status') ? 'bg-amber-600 text-white' : 'bg-white' }}">الكل</a>
-  <a href="/dashboard/orders?status=awaiting_payment" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='awaiting_payment' ? 'bg-amber-600 text-white' : 'bg-white' }}">⏳ بانتظار الدفع</a>
-  <a href="/dashboard/orders?status=processing" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='processing' ? 'bg-amber-600 text-white' : 'bg-white' }}">⚙️ قيد المعالجة</a>
-  <a href="/dashboard/orders?status=shipped" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='shipped' ? 'bg-amber-600 text-white' : 'bg-white' }}">📦 مشحون</a>
-  <a href="/dashboard/orders?status=delivered" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='delivered' ? 'bg-amber-600 text-white' : 'bg-white' }}">✅ موصّل</a>
+<!-- Filter Chips -->
+<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:20px;" class="no-scrollbar">
+  <a href="/dashboard/orders" class="{{ !request('status') ? 'shine-btn shine-btn-primary' : 'shine-btn' }}" style="{{ !request('status') ? '' : 'background:white;border:1px solid var(--border);color:var(--text-muted);' }}">
+    <i data-lucide="list"></i> الكل ({{ $orders->total() }})
+  </a>
+  <a href="/dashboard/orders?status=awaiting_payment" class="{{ request('status')==='awaiting_payment' ? 'shine-btn shine-btn-primary' : 'shine-btn' }}" style="{{ request('status')!=='awaiting_payment' ? 'background:white;border:1px solid var(--border);color:var(--text-muted);' : '' }}">
+    ⏳ بانتظار الدفع
+  </a>
+  <a href="/dashboard/orders?status=processing" class="{{ request('status')==='processing' ? 'shine-btn shine-btn-primary' : 'shine-btn' }}" style="{{ request('status')!=='processing' ? 'background:white;border:1px solid var(--border);color:var(--text-muted);' : '' }}">
+    ⚙️ قيد المعالجة
+  </a>
+  <a href="/dashboard/orders?status=shipped" class="{{ request('status')==='shipped' ? 'shine-btn shine-btn-primary' : 'shine-btn' }}" style="{{ request('status')!=='shipped' ? 'background:white;border:1px solid var(--border);color:var(--text-muted);' : '' }}">
+    📦 مشحون
+  </a>
+  <a href="/dashboard/orders?status=delivered" class="{{ request('status')==='delivered' ? 'shine-btn shine-btn-primary' : 'shine-btn' }}" style="{{ request('status')!=='delivered' ? 'background:white;border:1px solid var(--border);color:var(--text-muted);' : '' }}">
+    ✅ موصّل
+  </a>
 </div>
 
-<div class="bg-white rounded-2xl p-4 shadow-sm">
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm">
-      <thead class="text-slate-500 border-b text-right">
-        <tr><th class="py-2">الرقم</th><th>العميل</th><th>الجوال</th><th>المبلغ</th><th>الدفع</th><th>الحالة</th><th>التاريخ</th></tr>
-      </thead>
-      <tbody>
-        @forelse($orders as $o)
-        <tr class="border-b hover:bg-slate-50 cursor-pointer" onclick="location='/dashboard/orders/{{ $o->id }}'">
-          <td class="py-3 font-mono text-xs">{{ $o->order_number }}</td>
-          <td class="font-bold">{{ $o->customer_name }}</td>
-          <td class="font-mono text-xs">{{ $o->customer_phone }}</td>
-          <td class="font-bold text-amber-600">{{ number_format($o->total) }}</td>
-          <td>
-            <span class="px-2 py-1 rounded-full text-xs font-bold {{ \App\Support\StatusHelper::badge($o->payment_status) }}">
-              {{ \App\Support\StatusHelper::label($o->payment_status) }}
-            </span>
-          </td>
-          <td>
-            <span class="px-2 py-1 rounded-full text-xs font-bold {{ \App\Support\StatusHelper::badge($o->status) }}">
-              {{ \App\Support\StatusHelper::label($o->status) }}
-            </span>
-          </td>
-          <td class="text-slate-400 text-xs">{{ $o->created_at->diffForHumans() }}</td>
-        </tr>
-        @empty
-        <tr>
-          <td colspan="7" class="text-center py-12 text-slate-400">
-            <div class="text-4xl mb-3">🛒</div>
-            <div class="font-bold">لا توجد طلبات بعد</div>
-          </td>
-        </tr>
-        @endforelse
-      </tbody>
-    </table>
+<div class="shine-card">
+  @forelse($orders as $o)
+  <a href="/dashboard/orders/{{ $o->id }}" class="shine-list-item">
+    <div class="shine-item-avatar">
+      <i data-lucide="package"></i>
+    </div>
+    <div class="shine-item-content">
+      <h4>{{ $o->customer_name }}</h4>
+      <p style="font-family:monospace;font-size:11px;">{{ $o->order_number }}</p>
+      <p style="margin-top:2px;">📞 {{ $o->customer_phone }}</p>
+    </div>
+    <div class="shine-item-meta">
+      <div class="shine-item-amount">{{ number_format($o->total) }}</div>
+      <span class="shine-badge-status {{ 
+        $o->status === 'delivered' ? 'success' :
+        ($o->status === 'cancelled' ? 'danger' :
+        ($o->status === 'awaiting_payment' ? 'warning' :
+        ($o->status === 'shipped' ? 'info' : 'neutral'))) 
+      }}">
+        {{ \App\Support\StatusHelper::label($o->status) }}
+      </span>
+      <span class="shine-item-time">{{ $o->created_at->diffForHumans() }}</span>
+    </div>
+  </a>
+  @empty
+  <div class="shine-empty">
+    <div class="shine-empty-icon">🛒</div>
+    <h3>لا توجد طلبات بعد</h3>
+    <p>ستظهر هنا عندما يُنشئ العملاء طلبات</p>
   </div>
-  @if($orders->hasPages())<div class="mt-4">{{ $orders->links() }}</div>@endif
+  @endforelse
 </div>
+
+@if($orders->hasPages())
+<div style="margin-top:20px;">{{ $orders->links() }}</div>
+@endif
 
 @endsection

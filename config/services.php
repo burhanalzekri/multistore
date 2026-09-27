@@ -2,24 +2,8 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Third Party Services
-    |--------------------------------------------------------------------------
-    |
-    | This file is for storing the credentials for third party services such
-    | as Resend, Postmark, AWS, and more. This file provides the de facto
-    | location for this type of information, allowing packages to have
-    | a conventional file to locate the various service credentials.
-    |
-    */
-
     'postmark' => [
-        'key' => env('POSTMARK_API_KEY'),
-    ],
-
-    'resend' => [
-        'key' => env('RESEND_API_KEY'),
+        'token' => env('POSTMARK_TOKEN'),
     ],
 
     'ses' => [
@@ -28,11 +12,48 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'resend' => [
+        'key' => env('RESEND_KEY'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    // ═══ 📱 SMS Providers ═══
+    // ═══ ✈️ Telegram Bot ═══
+    'telegram' => [
+        'bot_token' => env('TELEGRAM_BOT_TOKEN'),
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
+    ],
+
+    // ═══ 🔔 Web Push (VAPID) ═══
+    // ═══ 🔔 OneSignal ═══
+    'onesignal' => [
+        'app_id' => env('ONESIGNAL_APP_ID'),
+        'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
+    ],
+
+    'push' => [
+        'public_key' => env('VAPID_PUBLIC_KEY'),
+        'private_key' => env('VAPID_PRIVATE_KEY'),
+        'subject' => env('VAPID_SUBJECT', 'mailto:admin@example.com'),
+    ],
+
+    'sms' => [
+        'provider' => env('SMS_PROVIDER', 'log'),
+        'twilio_sid' => env('TWILIO_SID'),
+        'twilio_token' => env('TWILIO_TOKEN'),
+        'twilio_from' => env('TWILIO_FROM'),
+        'ym_url' => env('YM_SMS_URL'),
+        'ym_key' => env('YM_SMS_KEY'),
+        'ym_sender' => env('YM_SMS_SENDER', 'MultiStore'),
+        'custom_url' => env('CUSTOM_SMS_URL'),
+        'custom_method' => env('CUSTOM_SMS_METHOD', 'POST'),
+        'custom_key' => env('CUSTOM_SMS_KEY'),
     ],
 
 ];

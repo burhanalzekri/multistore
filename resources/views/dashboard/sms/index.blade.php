@@ -1,54 +1,58 @@
 @extends('layouts.app')
-
 @section('title', 'رسائل SMS')
-@section('page-title', '📱 رسائل SMS')
+@section('page-title', 'رسائل SMS')
+@section('page-subtitle', $smsList->total() . ' رسالة')
 
 @section('content')
 
-<div class="flex flex-wrap gap-2 mb-4 text-sm">
-  <a href="/dashboard/sms" class="px-3 py-1.5 rounded-lg font-bold {{ !request('status') ? 'bg-amber-600 text-white' : 'bg-white' }}">الكل</a>
-  <a href="/dashboard/sms?status=matched" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='matched' ? 'bg-amber-600 text-white' : 'bg-white' }}">✅ مُطابَقة</a>
-  <a href="/dashboard/sms?status=review" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='review' ? 'bg-amber-600 text-white' : 'bg-white' }}">⚠️ للمراجعة</a>
-  <a href="/dashboard/sms?status=rejected" class="px-3 py-1.5 rounded-lg font-bold {{ request('status')==='rejected' ? 'bg-amber-600 text-white' : 'bg-white' }}">❌ مرفوضة</a>
+<!-- Filters -->
+<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:20px;" class="no-scrollbar">
+  <a href="/dashboard/sms" class="shine-btn" style="{{ !request('status') ? 'background:linear-gradient(135deg,#fbbf24,#f97316);color:white;box-shadow:0 4px 12px rgba(245,158,11,0.3);' : 'background:white;border:1px solid var(--border);color:var(--text-muted);' }}">
+    <i data-lucide="list"></i> الكل
+  </a>
+  <a href="/dashboard/sms?status=matched" class="shine-btn" style="{{ request('status')==='matched' ? 'background:linear-gradient(135deg,#fbbf24,#f97316);color:white;box-shadow:0 4px 12px rgba(245,158,11,0.3);' : 'background:white;border:1px solid var(--border);color:var(--text-muted);' }}">
+    ✅ مُطابَقة
+  </a>
+  <a href="/dashboard/sms?status=review" class="shine-btn" style="{{ request('status')==='review' ? 'background:linear-gradient(135deg,#fbbf24,#f97316);color:white;box-shadow:0 4px 12px rgba(245,158,11,0.3);' : 'background:white;border:1px solid var(--border);color:var(--text-muted);' }}">
+    ⚠️ للمراجعة
+  </a>
+  <a href="/dashboard/sms?status=rejected" class="shine-btn" style="{{ request('status')==='rejected' ? 'background:linear-gradient(135deg,#fbbf24,#f97316);color:white;box-shadow:0 4px 12px rgba(245,158,11,0.3);' : 'background:white;border:1px solid var(--border);color:var(--text-muted);' }}">
+    ❌ مرفوضة
+  </a>
 </div>
 
-<div class="bg-white rounded-2xl p-4 shadow-sm">
-  <div class="overflow-x-auto">
-    <table class="w-full text-sm">
-      <thead class="text-slate-500 border-b text-right">
-        <tr><th class="py-2">المرسل</th><th>المبلغ</th><th>المرجع</th><th>الثقة</th><th>الحالة</th><th>التاريخ</th></tr>
-      </thead>
-      <tbody>
-        @forelse($smsList as $s)
-        <tr class="border-b hover:bg-slate-50 cursor-pointer" onclick="location='/dashboard/sms/{{ $s->id }}'">
-          <td class="py-3 font-mono text-xs">{{ $s->sender_phone }}</td>
-          <td class="font-bold text-amber-600">{{ $s->parsed_amount ? number_format($s->parsed_amount) : '—' }}</td>
-          <td class="font-mono text-xs">{{ $s->parsed_reference ?? '—' }}</td>
-          <td>
-            <span class="text-xs font-bold {{ $s->confidence >= 80 ? 'text-green-600' : ($s->confidence >= 50 ? 'text-amber-600' : 'text-red-600') }}">
-              {{ $s->confidence }}%
-            </span>
-          </td>
-          <td>
-            <span class="px-2 py-1 rounded-full text-xs font-bold {{ \App\Support\StatusHelper::badge($s->status) }}">
-              {{ \App\Support\StatusHelper::label($s->status) }}
-            </span>
-          </td>
-          <td class="text-slate-400 text-xs">{{ $s->received_at?->diffForHumans() ?? '—' }}</td>
-        </tr>
-        @empty
-        <tr>
-          <td colspan="6" class="text-center py-12 text-slate-400">
-            <div class="text-4xl mb-3">📱</div>
-            <div class="font-bold">لا توجد رسائل بعد</div>
-            <div class="text-xs mt-2">جرّب إرسال SMS عبر Webhook</div>
-          </td>
-        </tr>
-        @endforelse
-      </tbody>
-    </table>
+<div class="shine-card">
+  @forelse($smsList as $s)
+  <a href="/dashboard/sms/{{ $s->id }}" class="shine-list-item">
+    <div class="shine-item-avatar" style="background:{{ $s->status === 'matched' ? '#dcfce7' : ($s->status === 'rejected' ? '#fee2e2' : '#fef3c7') }};color:{{ $s->status === 'matched' ? '#15803d' : ($s->status === 'rejected' ? '#b91c1c' : '#b45309') }};">
+      <i data-lucide="smartphone"></i>
+    </div>
+    <div class="shine-item-content">
+      <h4 style="font-family:monospace;">{{ $s->sender_phone }}</h4>
+      <p>{{ \Illuminate\Support\Str::limit($s->raw_body, 60) }}</p>
+      <p style="margin-top:3px;">
+        المرجع: <strong style="font-family:monospace;">{{ $s->parsed_reference ?? '—' }}</strong>
+      </p>
+    </div>
+    <div class="shine-item-meta">
+      <div class="shine-item-amount">{{ $s->parsed_amount ? number_format($s->parsed_amount) : '—' }}</div>
+      <span class="shine-badge-status {{ $s->status === 'matched' ? 'success' : ($s->status === 'rejected' ? 'danger' : 'warning') }}">
+        {{ \App\Support\StatusHelper::label($s->status) }}
+      </span>
+      <span class="shine-item-time">{{ $s->received_at?->diffForHumans() ?? '—' }}</span>
+    </div>
+  </a>
+  @empty
+  <div class="shine-empty">
+    <div class="shine-empty-icon">📱</div>
+    <h3>لا توجد رسائل بعد</h3>
+    <p>الرسائل الواردة ستظهر هنا تلقائيًا</p>
   </div>
-  @if($smsList->hasPages())<div class="mt-4">{{ $smsList->links() }}</div>@endif
+  @endforelse
 </div>
+
+@if($smsList->hasPages())
+<div style="margin-top:20px;">{{ $smsList->links() }}</div>
+@endif
 
 @endsection

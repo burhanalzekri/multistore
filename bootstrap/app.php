@@ -11,13 +11,20 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: "*");
         $middleware->web(append: [
             \App\Http\Middleware\ResolveTenant::class,
+            \App\Http\Middleware\CheckMaintenance::class,
         ]);
-        
-        // ⭐ استثناء Webhook من CSRF
+        $middleware->alias([
+            'permission' => \App\Http\Middleware\CheckPermission::class,
+        ]);
         $middleware->validateCsrfTokens(except: [
             'webhooks/*',
+            'api/track',
+            'api/*',
+            'api/track',
+            'api/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
