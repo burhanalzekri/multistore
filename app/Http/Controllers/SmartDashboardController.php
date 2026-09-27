@@ -31,7 +31,7 @@ class SmartDashboardController extends Controller
             "sales" => Order::where("shop_id", $shopId)->where("payment_status", "confirmed")->sum("total"),
             "orders" => Order::where("shop_id", $shopId)->count(),
             "pending" => Order::where("shop_id", $shopId)->where("status", "awaiting_payment")->count(),
-            "sms" => SmsInbox::where("shop_id", $shopId)->count(),
+            "sms" => (function() use ($shopId) { try { return SmsInbox::where("shop_id", $shopId)->count(); } catch (\Throwable $e) { \Log::warning("SmsInbox stats failed: " . $e->getMessage()); return 0; } })(),
         ];
 
         $today = Carbon::today();
@@ -105,7 +105,7 @@ class SmartDashboardController extends Controller
         if ($stats["pending"] > 0) {
             $alerts[] = ["type" => "info", "icon" => "clock", "title" => $stats["pending"] . " طلب بانتظار الدفع", "message" => "راجعها", "link" => "/dashboard/orders?status=awaiting_payment"];
         }
-        $reviewSmsCount = SmsInbox::where("shop_id", $shopId)->where("status", "review")->count();
+        $reviewSmsCount = 0; try { $reviewSmsCount = SmsInbox::where("shop_id", $shopId)->where("status", "review")->count(); } catch (\Throwable $e) { \Log::warning("ReviewSmsCount failed: " . $e->getMessage()); }
         if ($reviewSmsCount > 0) {
             $alerts[] = ["type" => "warning", "icon" => "message-square", "title" => $reviewSmsCount . " رسالة SMS تحتاج مراجعة", "message" => "راجعها", "link" => "/dashboard/sms?status=review"];
         }
@@ -114,7 +114,7 @@ class SmartDashboardController extends Controller
         }
 
         $recentOrders = Order::where("shop_id", $shopId)->latest()->take(5)->get();
-        $smsList = SmsInbox::where("shop_id", $shopId)->latest()->take(5)->get();
+        $smsList = collect(); try { $smsList = SmsInbox::where("shop_id", $shopId)->latest()->take(5)->get(); } catch (\Throwable $e) { \Log::warning("SmsList failed: " . $e->getMessage()); }
 
         return view("dashboard.smart", compact(
             "stats", "todayStats", "bestSellers", "lowStock", "outOfStock",
