@@ -619,6 +619,28 @@
     }
   }
 
+
+  /* ═══ 🎨 MS Brand Logo ═══ */
+  .ms-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #ea580c 100%);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: -1px;
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    font-family: Cairo, sans-serif;
+  }
+
+  @media (max-width: 680px) {
+    .ms-logo { width: 50px; height: 50px; font-size: 24px; border-radius: 15px; }
+  }
+
 </style>
 </head>
 <body>
@@ -631,13 +653,7 @@
   <div class="mobile-header">
     <div class="mobile-header-content">
 
-      <div class="brand-logo">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 9l1.5-6h15L21 9"/>
-          <path d="M3 9v11a1 1 0 001 1h16a1 1 0 001-1V9"/>
-          <path d="M9 22V12h6v10"/>
-        </svg>
-      </div>
+      <div class="ms-logo">M</div>
 
       <h1 class="brand-title">MultiStore</h1>
       <p class="brand-subtitle">

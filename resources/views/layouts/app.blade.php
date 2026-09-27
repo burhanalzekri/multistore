@@ -411,7 +411,7 @@
 <!-- ═══ Sidebar ═══ -->
 <aside class="admin-sidebar" id="adminSidebar">
   <div class="admin-sidebar-header">
-    <div class="admin-logo">🍯</div>
+    <div class="admin-logo" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;font-family:Cairo,sans-serif;font-weight:900;font-size:20px;letter-spacing:-1px;box-shadow:0 4px 12px rgba(245,158,11,0.3);">M</div>
     <div class="admin-shop-info">
       <h1>{{ $currentShop->name ?? 'منصتي' }}</h1>
       <p><span class="pulse-dot"></span> متجر نشط</p>

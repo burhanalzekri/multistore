@@ -529,8 +529,8 @@
 
             <a href="/" class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white shadow-lg"
-                     style="background:linear-gradient(135deg,#f59e0b,#f97316)">
-                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                     style="background:linear-gradient(135deg,#f59e0b,#f97316);font-family:Cairo,sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;">
+                    M
                 </div>
 
                 <div>
@@ -1366,9 +1366,9 @@
 
             <div class="md:col-span-2">
                 <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center"
-                         style="background:linear-gradient(135deg,#f59e0b,#f97316)">
-                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white"
+                         style="background:linear-gradient(135deg,#f59e0b,#f97316);font-family:Cairo,sans-serif;font-weight:900;font-size:22px;letter-spacing:-1px;box-shadow:0 6px 16px rgba(245,158,11,0.3);">
+                        M
                     </div>
 
                     <div class="font-black text-xl">
