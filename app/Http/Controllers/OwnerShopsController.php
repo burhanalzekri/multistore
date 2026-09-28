@@ -16,16 +16,38 @@ use Illuminate\Support\Str;
 class OwnerShopsController extends Controller implements HasMiddleware
 {
     /**
-     * صلاحية للمشرف العام فقط (Laravel 13 style)
+     * صلاحيات دقيقة (Laravel 13 style)
+     *
+     * super_admin → كل الصلاحيات
+     * shop_admin  → show/edit/update فقط لمتجره هو
+     * آخرون      → محجوبون
      */
     public static function middleware(): array
     {
         return [
             new Middleware(function ($request, $next) {
-                if (!Auth::check() || Auth::user()->role !== 'super_admin') {
-                    abort(403, 'غير مصرح لك بالوصول لهذه الصفحة');
+                $user = Auth::user();
+                if (!$user) {
+                    return redirect('/login');
                 }
-                return $next($request);
+
+                // super_admin: مفتوح تماماً
+                if ($user->role === 'super_admin') {
+                    return $next($request);
+                }
+
+                // shop_admin: show / edit / update لمتجره
+                $method = $request->route()->getActionMethod();
+                $allowed = ['show', 'edit', 'update'];
+
+                if (in_array($method, $allowed, true) && $user->role === 'shop_admin') {
+                    $shopId = (int) $request->route('id');
+                    if ($shopId && (int) $user->shop_id === $shopId) {
+                        return $next($request);
+                    }
+                }
+
+                abort(403, 'غير مصرح لك بالوصول لهذه الصفحة');
             }),
         ];
     }

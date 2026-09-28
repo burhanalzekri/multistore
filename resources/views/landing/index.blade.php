@@ -1059,7 +1059,7 @@ tailwind.config = {
 
       <!-- Image 1: 3D Store -->
       <div class="reveal" style="position:relative;border-radius:24px;overflow:hidden;background:#0f172a;box-shadow:0 20px 60px -20px rgba(15,23,42,.3);transition:all .5s cubic-bezier(.2,.9,.3,1.1);min-height:420px" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 30px 80px -20px rgba(15,23,42,.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 20px 60px -20px rgba(15,23,42,.3)'">
-        <img src="{{ asset('images/marketing/store-3d.png') }}" alt="عرض ثلاثي الأبعاد" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
+        <img src="{{ asset('images/marketing/store-3d.webp') }}" alt="عرض ثلاثي الأبعاد" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.95) 0%,rgba(15,23,42,.4) 40%,transparent 70%)"></div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:28px;color:#fff">
           <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;background:linear-gradient(135deg,#f59e0b,#f97316);font-size:11px;font-weight:900;box-shadow:0 8px 20px rgba(245,158,11,.5)">
@@ -1073,7 +1073,7 @@ tailwind.config = {
 
       <!-- Image 2: Dashboard -->
       <div class="reveal delay-1" style="position:relative;border-radius:24px;overflow:hidden;background:#0f172a;box-shadow:0 20px 60px -20px rgba(15,23,42,.3);transition:all .5s cubic-bezier(.2,.9,.3,1.1);min-height:420px" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 30px 80px -20px rgba(15,23,42,.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 20px 60px -20px rgba(15,23,42,.3)'">
-        <img src="{{ asset('images/marketing/dashboard.png') }}" alt="لوحة تحكم MultiStore" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
+        <img src="{{ asset('images/marketing/dashboard.webp') }}" alt="لوحة تحكم MultiStore" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.95) 0%,rgba(15,23,42,.4) 40%,transparent 70%)"></div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:28px;color:#fff">
           <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);font-size:11px;font-weight:900;box-shadow:0 8px 20px rgba(59,130,246,.5)">
@@ -1087,7 +1087,7 @@ tailwind.config = {
 
       <!-- Image 3: Store Marketing -->
       <div class="reveal delay-2" style="position:relative;border-radius:24px;overflow:hidden;background:#0f172a;box-shadow:0 20px 60px -20px rgba(15,23,42,.3);transition:all .5s cubic-bezier(.2,.9,.3,1.1);min-height:420px" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 30px 80px -20px rgba(15,23,42,.4)'" onmouseout="this.style.transform='';this.style.boxShadow='0 20px 60px -20px rgba(15,23,42,.3)'">
-        <img src="{{ asset('images/marketing/store-marketing.png') }}" alt="واجهة المتجر الإلكتروني" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
+        <img src="{{ asset('images/marketing/store-marketing.webp') }}" alt="واجهة المتجر الإلكتروني" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform=''" loading="lazy" onerror="this.style.display='none'">
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,23,42,.95) 0%,rgba(15,23,42,.4) 40%,transparent 70%)"></div>
         <div style="position:absolute;bottom:0;left:0;right:0;padding:28px;color:#fff">
           <span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;background:linear-gradient(135deg,#10b981,#059669);font-size:11px;font-weight:900;box-shadow:0 8px 20px rgba(16,185,129,.5)">

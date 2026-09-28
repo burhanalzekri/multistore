@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title', 'تفاصيل المتجر')
-@section('page-title', '🏪 {{ $shop->name }}')
+@section('page-title', '🏪 ' . $shop->name)
 @section('page-subtitle', 'تفاصيل المتجر والإحصائيات والعمليات الأخيرة')
 @section('content')
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px;">

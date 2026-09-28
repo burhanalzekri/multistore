@@ -182,11 +182,28 @@ class AuthController extends Controller
     public function listShops()
     {
         $user = Auth::user();
-        if (!$user || $user->role !== 'super_admin') {
-            abort(403);
+        if (!$user) {
+            return redirect('/login');
         }
 
-        $shops = Shop::all();
+        // super_admin يرى كل المتاجر
+        if ($user->role === 'super_admin') {
+            $shops = Shop::orderBy('name')->get();
+        } else {
+            // باقي المستخدمين يرون المتاجر التي يملكونها/يعملون بها
+            $shops = Shop::where('id', $user->shop_id)
+                ->orWhereHas('users', function ($q) use ($user) {
+                    $q->where('users.id', $user->id);
+                })
+                ->orderBy('name')
+                ->get();
+
+            // إن لم يكن مرتبطاً بأي متجر — نعرض المتجر الذي يملكه (shop_id)
+            if ($shops->isEmpty() && $user->shop_id) {
+                $shops = Shop::where('id', $user->shop_id)->get();
+            }
+        }
+
         return view('auth.shops', compact('shops'));
     }
 
