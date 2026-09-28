@@ -66,6 +66,14 @@ Route::get('/manifest.webmanifest', function () {
     ], 200, ['Content-Type' => 'application/manifest+json']);
 })->name('manifest');
 
+
+
+// 📧 قوالب SMS
+Route::get("/dashboard/sms-templates", [App\Http\Controllers\SmsTemplateController::class, "index"])->name("sms-templates.index");
+Route::post("/dashboard/sms-templates/{eventKey}", [App\Http\Controllers\SmsTemplateController::class, "update"])->name("sms-templates.update");
+Route::post("/dashboard/sms-templates/{eventKey}/reset", [App\Http\Controllers\SmsTemplateController::class, "reset"])->name("sms-templates.reset");
+Route::post("/dashboard/sms-templates/preview", [App\Http\Controllers\SmsTemplateController::class, "preview"])->name("sms-templates.preview");
+
 Route::view('/offline', 'offline')->name('offline');
 
 Route::get('/showcase', fn () => view('showcase'))->name('showcase');

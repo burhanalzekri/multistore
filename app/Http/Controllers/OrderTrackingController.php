@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderStatusHistory;
 use App\Services\Sms\SmsSender;
+use App\Services\Sms\SmsTemplateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -122,17 +123,34 @@ class OrderTrackingController extends Controller
 
     private function notifyCustomer(Order $order, $status, $note)
     {
-        $messages = [
-            'processing' => "🔄 طلبك {$order->order_number} قيد التحضير",
-            'shipped' => "📦 تم شحن طلبك {$order->order_number}" . ($note ? " — {$note}" : ''),
-            'delivered' => "✅ تم توصيل طلبك {$order->order_number} — شكرًا!",
-            'cancelled' => "❌ تم إلغاء طلبك {$order->order_number}",
+        // ربط حالة الطلب بمفتاح الحدث في القوالب
+        $eventMap = [
+            'processing' => 'order_processing',
+            'shipped' => 'order_shipped',
+            'delivered' => 'order_delivered',
+            'cancelled' => 'order_cancelled',
+            'confirmed' => 'order_confirmed',
         ];
 
-        if (!isset($messages[$status])) return;
+        if (!isset($eventMap[$status])) return;
+
+        $eventKey = $eventMap[$status];
+        $shopId = $order->shop_id;
+
+        // استخدام قالب المتجر
+        $svc = app(SmsTemplateService::class);
+        $vars = $svc->varsFromOrder($order);
+        $message = $svc->build($shopId, $eventKey, $vars);
+
+        if ($message === null || $message === '') return;
+
+        // إضافة الملاحظة إن وُجدت
+        if ($note && in_array($status, ['shipped', 'processing'], true)) {
+            $message .= " — {$note}";
+        }
 
         try {
-            app(SmsSender::class)->send($order->customer_phone, $messages[$status]);
+            app(SmsSender::class)->send($order->customer_phone, $message);
         } catch (\Exception $e) {
             \Log::error('SMS: ' . $e->getMessage());
         }

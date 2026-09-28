@@ -507,12 +507,16 @@
     </a>
 
     <div class="admin-nav-label">التواصل</div>
-    <a href="/dashboard/sms" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms') ? 'active' : '' }}">
+    <a href="/dashboard/sms" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms') && !str_starts_with($route, 'dashboard/sms-templates') && !str_starts_with($route, 'dashboard/sms-logs') ? 'active' : '' }}">
       <i data-lucide="message-square"></i>
       <span>رسائل SMS</span>
       @if($reviewSms > 0)
       <span class="admin-nav-badge">{{ $reviewSms }}</span>
       @endif
+    </a>
+    <a href="/dashboard/sms-templates" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms-templates') ? 'active' : '' }}">
+      <i data-lucide="file-text"></i>
+      <span>قوالب SMS</span>
     </a>
     <a href="/dashboard/reviews" class="admin-nav-item {{ str_starts_with($route, 'dashboard/reviews') ? 'active' : '' }}">
       <i data-lucide="star"></i>
