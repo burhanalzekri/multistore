@@ -461,10 +461,6 @@
       <span>🔍</span>
       <span>ماسح الباركوود</span>
     </a>
-    <a href="/dashboard/sms-logs" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms-logs') ? 'active' : '' }}">
-      <span>📱</span>
-      <span>سجل SMS</span>
-    </a>
     <a href="/dashboard/analytics" class="admin-nav-item {{ str_starts_with($route, 'dashboard/analytics') && !str_starts_with($route, 'dashboard/analytics/variants') ? 'active' : '' }}">
       <i data-lucide="bar-chart-3"></i>
       <span>التحليلات</span>
@@ -507,16 +503,18 @@
     </a>
 
     <div class="admin-nav-label">التواصل</div>
-    <a href="/dashboard/sms" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms') && !str_starts_with($route, 'dashboard/sms-templates') && !str_starts_with($route, 'dashboard/sms-logs') ? 'active' : '' }}">
+    @php
+      $smsActive = str_starts_with($route, 'dashboard/sms-center')
+        || str_starts_with($route, 'dashboard/sms')
+        || str_starts_with($route, 'dashboard/sms-logs')
+        || str_starts_with($route, 'dashboard/sms-templates');
+    @endphp
+    <a href="/dashboard/sms-center" class="admin-nav-item {{ $smsActive ? 'active' : '' }}">
       <i data-lucide="message-square"></i>
-      <span>رسائل SMS</span>
+      <span>مركز SMS</span>
       @if($reviewSms > 0)
       <span class="admin-nav-badge">{{ $reviewSms }}</span>
       @endif
-    </a>
-    <a href="/dashboard/sms-templates" class="admin-nav-item {{ str_starts_with($route, 'dashboard/sms-templates') ? 'active' : '' }}">
-      <i data-lucide="file-text"></i>
-      <span>قوالب SMS</span>
     </a>
     <a href="/dashboard/reviews" class="admin-nav-item {{ str_starts_with($route, 'dashboard/reviews') ? 'active' : '' }}">
       <i data-lucide="star"></i>
@@ -596,7 +594,7 @@
           <i data-lucide="log-out"></i>
         </button>
       </form>
-      <a href="/dashboard/sms" class="admin-icon-btn" title="الإشعارات">
+      <a href="/dashboard/sms-center?tab=inbox" class="admin-icon-btn" title="الإشعارات">
         <i data-lucide="bell"></i>
         @if($reviewSms > 0)
         <span style="position:absolute;top:-4px;left:-4px;background:#ef4444;color:white;font-size:9px;font-weight:900;min-width:18px;height:18px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 4px;">{{ $reviewSms }}</span>
@@ -645,7 +643,13 @@
     <i data-lucide="shopping-bag"></i>
     <span>الطلبات</span>
   </a>
-  <a href="/dashboard/sms" class="{{ str_starts_with($route, 'dashboard/sms') ? 'active' : '' }}">
+  @php
+    $mobSmsActive = str_starts_with($route, 'dashboard/sms-center')
+      || str_starts_with($route, 'dashboard/sms')
+      || str_starts_with($route, 'dashboard/sms-logs')
+      || str_starts_with($route, 'dashboard/sms-templates');
+  @endphp
+  <a href="/dashboard/sms-center" class="{{ $mobSmsActive ? 'active' : '' }}">
     <i data-lucide="message-square"></i>
     <span>SMS</span>
   </a>

@@ -74,6 +74,10 @@ Route::post("/dashboard/sms-templates/{eventKey}", [App\Http\Controllers\SmsTemp
 Route::post("/dashboard/sms-templates/{eventKey}/reset", [App\Http\Controllers\SmsTemplateController::class, "reset"])->name("sms-templates.reset");
 Route::post("/dashboard/sms-templates/preview", [App\Http\Controllers\SmsTemplateController::class, "preview"])->name("sms-templates.preview");
 
+
+// 📱 مركز SMS الموحد
+Route::get("/dashboard/sms-center", [App\Http\Controllers\SmsCenterController::class, "index"])->name("sms-center.index");
+
 Route::view('/offline', 'offline')->name('offline');
 
 Route::get('/showcase', fn () => view('showcase'))->name('showcase');
