@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MultiStore — منصة التجارة الإلكترونية اليمنية</title>
 <meta name="description" content="MultiStore — منصة متاجر إلكترونية متعددة لأصحاب المتاجر اليمنيين. أنشئ متجرك في دقائق، أدر منتجاتك وطلباتك، واستقبل المدفوعات تلقائياً عبر SMS.">
-<meta name="theme-color" content="#f59e0b">
+<meta name="theme-color" content="#f97316">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <meta property="og:title" content="MultiStore — منصة التجارة الإلكترونية">
 <meta property="og:description" content="أنشئ متجرك في دقائق. إدارة ذكية، دفع تلقائي، تجربة عالمية.">
@@ -1461,5 +1463,14 @@ tailwind.config = {
   console.log('%cصُنع بـ ❤️ في اليمن 🇾🇪', 'color:#ea580c;font-size:14px;font-weight:700');
 </script>
 
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker.register("/sw.js", { scope: "/" })
+        .then(function() { console.log("SW registered"); })
+        .catch(function(err) { console.warn("SW failed", err); });
+    });
+  }
+</script>
 </body>
 </html>

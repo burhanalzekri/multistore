@@ -41,42 +41,11 @@ Route::get('/manifest.webmanifest', function () {
     $name = $shop?->name ?? 'MultiStore';
     $color = $shop?->primary_color ?? '#d97706';
 
-    // أفضل 10 منتجات
-    $topProducts = \DB::table('order_items')
-        ->join('orders', 'order_items.order_id', '=', 'orders.id')
-        ->whereBetween('orders.created_at', [$start, $end])
-        ->whereNotIn('orders.status', ['cancelled'])
-        ->select(
-            'order_items.product_name as name',
-            \DB::raw('SUM(order_items.quantity) as qty'),
-            \DB::raw('SUM(order_items.line_total) as revenue')
-        )
-        ->groupBy('order_items.product_name')
-        ->orderByDesc('revenue')
-        ->take(10)
-        ->get()
-        ->map(fn($p) => ['name' => $p->name, 'qty' => (int) $p->qty, 'revenue' => (float) $p->revenue]);
-
-    // أفضل 10 عملاء
-    $topCustomers = $orders->groupBy(fn($o) => $o->customer_phone ?: $o->customer_name)
-        ->map(function($g, $key) {
-            $first = $g->first();
-            return [
-                'name' => $first->customer_name,
-                'phone' => $first->customer_phone ?? '',
-                'orders' => $g->count(),
-                'revenue' => (float) $g->sum('total'),
-            ];
-        })
-        ->sortByDesc('revenue')
-        ->take(10)
-        ->values();
-
     return response()->json([
         'name' => $name,
         'short_name' => mb_substr($name, 0, 12),
         'description' => 'تسوق منتجات ' . $name,
-        'start_url' => '/demo-shop',
+        'start_url' => '/',
         'scope' => '/',
         'display' => 'standalone',
         'background_color' => '#ffffff',
