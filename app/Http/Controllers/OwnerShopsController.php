@@ -7,21 +7,27 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class OwnerShopsController extends Controller
+class OwnerShopsController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    /**
+     * صلاحية للمشرف العام فقط (Laravel 13 style)
+     */
+    public static function middleware(): array
     {
-        // صلاحية للمشرف العام فقط
-        $this->middleware(function ($request, $next) {
-            if (!Auth::check() || Auth::user()->role !== 'super_admin') {
-                abort(403, 'غير مصرح لك بالوصول لهذه الصفحة');
-            }
-            return $next($request);
-        });
+        return [
+            new Middleware(function ($request, $next) {
+                if (!Auth::check() || Auth::user()->role !== 'super_admin') {
+                    abort(403, 'غير مصرح لك بالوصول لهذه الصفحة');
+                }
+                return $next($request);
+            }),
+        ];
     }
 
     /**
