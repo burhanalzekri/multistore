@@ -119,3 +119,17 @@ Thumbs.db
 *.backup-*
 *.backup.*
 *.bak-*
+
+# ═══ Cleanup patterns (2026-09-28) ═══
+*.bak
+*.bak[0-9]*
+*.bak-*
+*.broken*
+*.broken-*
+*.before-*
+*.old
+*.backup
+*.sqlite.backup.*
+*.sqlite.bak-*
+/fresh-test/
+multistore-trash-*
