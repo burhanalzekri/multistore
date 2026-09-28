@@ -189,6 +189,77 @@
             <span class="shine-theme-thumb" id="settingsThemeThumb">{{ (session('theme') ?? 'light') === 'dark' ? '🌙' : '☀️' }}</span>
           </button>
         </div>
+
+      {{-- 🎨 قسم الشعار --}}
+      <div id="logo-upload-section" style="background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:24px;margin-top:20px;box-shadow:0 4px 16px rgba(15,23,42,.05);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #f3f4f6;">
+          <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#fff7ed,#ffedd5);display:grid;place-items:center;font-size:22px;">🎨</div>
+          <div>
+            <h3 style="font-size:16px;font-weight:900;color:#0f172a;margin:0;">شعار المتجر</h3>
+            <p style="font-size:12.5px;color:#6b7280;margin:4px 0 0 0;">ارفع شعارك المخصص — سيظهر في جميع الصفحات</p>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px;background:linear-gradient(135deg,#fef9f0,#fff7ed);border-radius:16px;margin-bottom:20px;">
+          <div style="width:140px;height:140px;border-radius:28px;background:#fff;display:grid;place-items:center;box-shadow:0 12px 32px rgba(245,158,11,.15);overflow:hidden;border:3px solid #fef3c7;">
+            @if($shop->logo)
+              @php
+                $logoUrl = str_starts_with($shop->logo, 'http') ? $shop->logo : \Storage::url($shop->logo);
+              @endphp
+              <img src="{{ $logoUrl }}" alt="{{ $shop->name }}" id="logoPreviewImg" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='{{ asset('images/logo/default.svg') }}'">
+            @else
+              <img src="{{ asset('images/logo/default.svg') }}" alt="الشعار الافتراضي" id="logoPreviewImg" style="width:100%;height:100%;object-fit:cover;">
+            @endif
+          </div>
+          @if($shop->logo)
+            <div style="font-size:13px;font-weight:800;color:#166534;background:#dcfce7;padding:6px 14px;border-radius:99px;">✅ شعار مخصص مُفعّل</div>
+          @else
+            <div style="font-size:13px;font-weight:800;color:#92400e;background:#fef3c7;padding:6px 14px;border-radius:99px;">ℹ️ الشعار الافتراضي (M)</div>
+          @endif
+        </div>
+
+        <form method="POST" action="{{ route('settings.upload-logo') }}" enctype="multipart/form-data" style="margin-bottom:12px;">
+          @csrf
+          <div style="display:grid;gap:12px;">
+            <label for="logoInput" style="display:block;padding:20px;background:#fff7ed;border:2px dashed #fdba74;border-radius:14px;text-align:center;cursor:pointer;">
+              <input type="file" name="logo" id="logoInput" accept="image/png,image/jpeg,image/svg+xml,image/webp" required style="display:none;" onchange="previewLogo(this)">
+              <div style="font-size:32px;margin-bottom:8px;">📤</div>
+              <div style="font-size:14px;font-weight:900;color:#c2410c;" id="logoUploadText">اختر صورة الشعار</div>
+              <div style="font-size:11.5px;color:#9a3412;margin-top:6px;">PNG · JPG · SVG · WebP — حد أقصى 2MB</div>
+            </label>
+
+            <button type="submit" style="padding:14px;background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;border:0;border-radius:12px;font-weight:900;font-size:14px;font-family:inherit;cursor:pointer;box-shadow:0 8px 20px rgba(245,158,11,.35);">
+              💾 حفظ الشعار
+            </button>
+          </div>
+        </form>
+
+        @if($shop->logo)
+          <form method="POST" action="{{ route('settings.delete-logo') }}">
+            @csrf
+            @method('DELETE')
+            <button type="submit" onclick="return confirm('هل أنت متأكد من حذف الشعار؟')" style="width:100%;padding:12px;background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:12px;font-weight:800;font-size:13.5px;font-family:inherit;cursor:pointer;">
+              🗑️ حذف الشعار المخصص
+            </button>
+          </form>
+        @endif
+      </div>
+
+      <script>
+      window.previewLogo = function(input) {
+        var file = input.files[0];
+        if (!file) return;
+        var text = document.getElementById('logoUploadText');
+        if (text) text.textContent = '✅ ' + file.name;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var preview = document.getElementById('logoPreviewImg');
+          if (preview) preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      };
+      </script>
+
       </div>
     </div>
   </div>

@@ -763,3 +763,12 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
 // ═══ API ═══
 Route::get('/api/shipping-zones', [\App\Http\Controllers\ShippingZoneController::class, 'apiList'])->name('api.shipping-zones');
 Route::post('/api/shipping-zones/calculate', [\App\Http\Controllers\ShippingZoneController::class, 'apiCalculate'])->name('api.shipping-zones.calculate');
+
+
+// ═══════════════════════════════════════════════════════════
+// 🎨 شعار المتجر
+// ═══════════════════════════════════════════════════════════
+Route::middleware('auth')->prefix('dashboard/settings')->group(function () {
+    Route::post('/upload-logo', [\App\Http\Controllers\SettingsController::class, 'uploadLogo'])->name('settings.upload-logo');
+    Route::delete('/delete-logo', [\App\Http\Controllers\SettingsController::class, 'deleteLogo'])->name('settings.delete-logo');
+});

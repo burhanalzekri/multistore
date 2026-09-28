@@ -73,6 +73,10 @@ class AuthController extends Controller
             'city'          => 'required|string|max:100',
             'country'       => 'nullable|string|max:100',
             'password'      => 'required|string|min:6|confirmed',
+            'logo'          => 'nullable|file|mimes:png,jpg,jpeg,svg,webp|max:2048',
+        ], [
+            'logo.mimes' => 'الشعار يجب أن يكون PNG أو JPG أو SVG أو WebP',
+            'logo.max'   => 'حجم الشعار يجب أن يكون أقل من 2MB',
         ]);
 
         // 1) أنشئ المتجر
@@ -90,6 +94,23 @@ class AuthController extends Controller
             'status'        => 'trial',
             'trial_ends_at' => now()->addDays(14),
         ]);
+
+        // 1.5) 🎨 حفظ الشعار إذا رُفع
+        if ($request->hasFile('logo')) {
+            try {
+                $logoFile = $request->file('logo');
+                $logoName = 'shop-' . $shop->id . '-' . time() . '.' . $logoFile->getClientOriginalExtension();
+                $logoPath = $logoFile->storeAs('logos', $logoName, 'public');
+
+                $shop->logo = $logoPath;
+                $shop->save();
+
+                \Log::info('✅ تم رفع شعار المتجر: ' . $shop->name . ' — ' . $logoPath);
+            } catch (\Throwable $e) {
+                \Log::warning('⚠️ فشل رفع الشعار: ' . $e->getMessage());
+                // لا نُوقف التسجيل
+            }
+        }
 
         // 2) أنشئ المستخدم (مدير المتجر)
         $user = User::create([
