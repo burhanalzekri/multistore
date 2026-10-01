@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'dsn' => env('SENTRY_LARAVEL_DSN', env('SENTRY_DSN')),
+    'release' => trim(exec('git --git-dir ' . base_path('.git') . ' log --pretty="%h" -n1 HEAD 2>/dev/null')),
+    'environment' => env('SENTRY_ENVIRONMENT', env('APP_ENV', 'production')),
+    'sample_rate' => env('SENTRY_SAMPLE_RATE') === null ? 1.0 : (float) env('SENTRY_SAMPLE_RATE'),
+    'traces_sample_rate' => env('SENTRY_TRACES_SAMPLE_RATE') === null ? null : (float) env('SENTRY_TRACES_SAMPLE_RATE'),
+    'profiles_sample_rate' => env('SENTRY_PROFILES_SAMPLE_RATE') === null ? null : (float) env('SENTRY_PROFILES_SAMPLE_RATE'),
+    'send_default_pii' => env('SENTRY_SEND_DEFAULT_PII', false),
+    'ignore_exceptions' => [],
+    'ignore_transactions' => [],
+    'before_send' => null,
+    'before_send_transaction' => null,
+    'before_breadcrumb' => null,
+    'breadcrumbs' => [
+        'logs' => true,
+        'sql_queries' => true,
+        'sql_bindings' => true,
+        'queue_info' => true,
+        'command_info' => true,
+        'http_client_requests' => true,
+    ],
+    'tracing' => [
+        'queue_job_transactions' => env('SENTRY_TRACE_QUEUE_ENABLED', false),
+        'queue_jobs' => [],
+        'sql_queries' => env('SENTRY_TRACE_SQL_QUERIES_ENABLED', false),
+        'sql_origin' => env('SENTRY_TRACE_SQL_ORIGIN_ENABLED', true),
+        'views' => env('SENTRY_TRACE_VIEWS_ENABLED', true),
+        'livewire' => env('SENTRY_TRACE_LIVEWIRE_ENABLED', true),
+        'http_client_requests' => env('SENTRY_TRACE_HTTP_CLIENT_REQUESTS_ENABLED', true),
+        'redis_commands' => env('SENTRY_TRACE_REDIS_COMMANDS', false),
+        'redis_origin' => env('SENTRY_TRACE_REDIS_ORIGIN_ENABLED', true),
+        'notifications' => env('SENTRY_TRACE_NOTIFICATIONS_ENABLED', true),
+        'missing_routes' => env('SENTRY_TRACE_MISSING_ROUTES_ENABLED', false),
+        'continue_after_response' => env('SENTRY_TRACE_CONTINUE_AFTER_RESPONSE', true),
+        'default_integrations' => env('SENTRY_TRACE_DEFAULT_INTEGRATIONS_ENABLED', true),
+    ],
+    'http_client' => [
+        'timeout' => (int) env('SENTRY_HTTP_TIMEOUT', 15),
+    ],
+];

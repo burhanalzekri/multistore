@@ -1,0 +1,61 @@
+# ═══ MultiStore .dockerignore ═══
+
+# Environment / Secrets
+.env
+.env.*
+!.env.example
+
+# Git
+.git/
+.gitignore
+
+# Backups / old files
+**/*.bak
+**/*.bak-*
+**/*.backup
+**/*.broken
+**/*.old
+**/*.before-*
+**/*~
+
+# Backup directories
+storage/backups/
+**/backup/
+**/backups/
+
+# Laravel generated
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+!bootstrap/cache/.gitignore
+
+# Local databases
+*.sqlite
+*.sqlite3
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Development / temp
+*.tmp
+*.temp
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# Node dev deps
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project-specific
+/fresh-test
+multistore-trash-*
