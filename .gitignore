@@ -133,3 +133,4 @@ Thumbs.db
 *.sqlite.bak-*
 /fresh-test/
 multistore-trash-*
+sms-forwarder.sh
