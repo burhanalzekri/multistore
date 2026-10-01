@@ -37,11 +37,15 @@ echo "🔗 Storage link..."
 php artisan storage:link || true
 
 # ═══ 4) Apache ═══
-echo "✅ تشغيل Apache على منفذ 80..."
+echo "🌐 PORT=${PORT:-10000}"
 
 # نستخدم منفذ 10000 (Render default)
 PORT="${PORT:-10000}"
-sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf 2>/dev/null || true
+sed -i "s/Listen [0-9]*/Listen ${PORT}/g" /etc/apache2/ports.conf 2>/dev/null || true
+grep "Listen" /etc/apache2/ports.conf
 sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/g" /etc/apache2/sites-available/000-default.conf 2>/dev/null || true
 
+echo "🔍 فحص إعدادات Apache..."
+apache2ctl configtest 2>&1 || true
+echo "▶️ بدء Apache على المنفذ ${PORT}..."
 exec apache2-foreground
