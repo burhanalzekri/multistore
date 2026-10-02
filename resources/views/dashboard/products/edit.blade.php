@@ -91,7 +91,7 @@
       <div>
         <label class="ez-label">الصورة الرئيسية</label>
         <div class="ez-image-upload-box" style="position:relative;">
-          <img src="{{ $product->image ? asset('storage/' . $product->image) : '' }}" id="mainPreviewImg" style="width:100%;height:100%;object-fit:cover;display:{{ $product->image ? 'block' : 'none' }};">
+          <img src="{{ $product->image_url ?? '' }}" id="mainPreviewImg" style="width:100%;height:100%;object-fit:cover;display:{{ $product->image ? 'block' : 'none' }};">
           <label for="mainImageInput" class="ez-upload-label" style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,0.9);">📤 استبدال الصورة</label>
           <input type="file" name="image" id="mainImageInput" accept="image/*" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
         </div>
@@ -103,7 +103,7 @@
         <div class="ez-gallery-grid">
           @if($product->gallery)
             @foreach($product->gallery as $g)
-              <img src="{{ asset('storage/' . $g) }}" class="ez-gallery-img">
+              <img src="{{ str_starts_with($g, 'http') ? $g : asset('storage/' . $g) }}" class="ez-gallery-img">
             @endforeach
           @endif
         </div>

@@ -170,4 +170,23 @@ class Product extends Model
 
         return \Storage::url($first);
     }
+
+
+    /**
+     * 🖼️ Alias — gallery يشير إلى images
+     * (للتوافق مع الـ Views القديمة)
+     */
+    public function getGalleryAttribute(): array
+    {
+        $images = $this->images;
+        return is_array($images) ? $images : [];
+    }
+
+    /**
+     * 🎬 Alias — videoUrl attribute
+     */
+    public function getVideoUrlAttribute(): ?string
+    {
+        return $this->videoUrl();
+    }
 }

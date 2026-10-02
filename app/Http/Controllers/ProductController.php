@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
+
     public function index()
     {
         $products = Product::latest()->paginate(20);
@@ -29,19 +36,17 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // 🧹 تنظيف: إزالة image إذا كان مصفوفة فارغة
+        // تنظيف
         if ($request->has('image') && !$request->hasFile('image')) {
             $request->request->remove('image');
             $request->files->remove('image');
         }
-        // نفس الشيء للـ video و video_poster
         foreach (['video', 'video_poster'] as $f) {
             if ($request->has($f) && !$request->hasFile($f)) {
                 $request->request->remove($f);
                 $request->files->remove($f);
             }
         }
-        // gallery: صفّها إذا كانت فارغة
         if ($request->has('gallery')) {
             $g = $request->input('gallery');
             if (!is_array($g) || empty(array_filter($g, 'is_file')) && !$request->hasFile('gallery')) {
@@ -66,45 +71,52 @@ class ProductController extends Controller
         $data['slug'] = Str::slug($data['name']) . '-' . uniqid();
         $data['is_active'] = true;
 
-        // رفع الصورة الرئيسية
+        // رفع الصورة الرئيسية → Cloudinary
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $up = $this->cloudinary->upload($request->file('image'), 'products');
+            if ($up['success']) {
+                $data['image'] = $up['url'];
+            } else {
+                return back()->withInput()->withErrors(['image' => 'فشل رفع الصورة: ' . $up['error']]);
+            }
         }
 
-        // رفع الصور الإضافية
+        // رفع صور المعرض → Cloudinary
         $gallery = [];
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $file) {
-                $gallery[] = $file->store('products', 'public');
+                $up = $this->cloudinary->upload($file, 'products/gallery');
+                if ($up['success']) {
+                    $gallery[] = $up['url'];
+                }
             }
         }
         $data['images'] = $gallery;
 
-        // رفع الفيديو
+        // رفع الفيديو → Cloudinary
         if ($request->hasFile('video')) {
-            $data['video'] = $request->file('video')->store('products/videos', 'public');
+            $up = $this->cloudinary->uploadVideo($request->file('video'), 'videos');
+            if ($up['success']) {
+                $data['video'] = $up['url'];
+            }
         }
 
         // رفع Poster الفيديو
         if ($request->hasFile('video_poster')) {
-            $data['video_poster'] = $request->file('video_poster')->store('products', 'public');
+            $up = $this->cloudinary->upload($request->file('video_poster'), 'products/posters');
+            if ($up['success']) {
+                $data['video_poster'] = $up['url'];
+            }
         }
 
         if (empty($data['stock'])) $data['stock'] = 0;
-        // 🧹 إزالة الحقول غير الموجودة في DB
+
         unset($data['variant_type'], $data['variants'], $data['barcode_mode'], $data['final_barcode'], $data['gallery'], $data['_token'], $data['_method']);
-        
+
         $product = Product::create($data);
         $this->saveVariants($product, $request->input('variants'));
 
-        // 📊 إذا كان هناك variants، نحسب المخزون الإجمالي منها
-        $variantsCount = $product->variants()->count();
-        if ($variantsCount > 0) {
-            $total = (int) $product->variants()->sum('stock');
-            $product->update(['stock' => $total]);
-        }
-
-        // 📊 إذا كان هناك variants، نحسب المخزون الإجمالي منها
+        // حساب المخزون من variants
         $variantsCount = $product->variants()->count();
         if ($variantsCount > 0) {
             $total = (int) $product->variants()->sum('stock');
@@ -132,7 +144,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        // 🧹 نفس التنظيف
+        // تنظيف
         if ($request->has('image') && !$request->hasFile('image')) {
             $request->request->remove('image');
             $request->files->remove('image');
@@ -172,7 +184,6 @@ class ProductController extends Controller
             'variants.*.price' => 'nullable|numeric|min:0',
         ]);
 
-        // تحويل النصوص إلى JSON
         if (!empty($data['sizes'])) {
             $data['sizes'] = array_filter(array_map('trim', explode(',', $data['sizes'])));
         }
@@ -182,65 +193,67 @@ class ProductController extends Controller
 
         // تحديث الصورة الرئيسية
         if ($request->hasFile('image')) {
-            if ($product->image && !str_starts_with($product->image, 'http')) {
-                Storage::disk('public')->delete($product->image);
+            if ($product->image) {
+                $this->cloudinary->deleteByUrl($product->image);
             }
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $up = $this->cloudinary->upload($request->file('image'), 'products');
+            if ($up['success']) {
+                $data['image'] = $up['url'];
+            }
         }
 
-        // إضافة صور جديدة للـ gallery
+        // إضافة صور جديدة للمعرض
         if ($request->hasFile('gallery')) {
-            $existingImages = $product->images ?? [];
+            $existing = $product->images ?? [];
             foreach ($request->file('gallery') as $file) {
-                $existingImages[] = $file->store('products', 'public');
+                if ($file && $file->isValid()) {
+                    $up = $this->cloudinary->upload($file, 'products/gallery');
+                    if ($up['success']) {
+                        $existing[] = $up['url'];
+                    }
+                }
             }
-            $data['images'] = $existingImages;
+            $data['images'] = $existing;
         }
 
         // تحديث الفيديو
         if ($request->hasFile('video')) {
-            if ($product->video && !str_starts_with($product->video, 'http')) {
-                Storage::disk('public')->delete($product->video);
+            if ($product->video) {
+                $this->cloudinary->deleteByUrl($product->video);
             }
-            $data['video'] = $request->file('video')->store('products/videos', 'public');
+            $up = $this->cloudinary->uploadVideo($request->file('video'), 'videos');
+            if ($up['success']) {
+                $data['video'] = $up['url'];
+            }
         }
 
         // تحديث Poster
         if ($request->hasFile('video_poster')) {
-            if ($product->video_poster && !str_starts_with($product->video_poster, 'http')) {
-                Storage::disk('public')->delete($product->video_poster);
+            if ($product->video_poster) {
+                $this->cloudinary->deleteByUrl($product->video_poster);
             }
-            $data['video_poster'] = $request->file('video_poster')->store('products', 'public');
+            $up = $this->cloudinary->upload($request->file('video_poster'), 'products/posters');
+            if ($up['success']) {
+                $data['video_poster'] = $up['url'];
+            }
         }
 
         // حذف الفيديو
         if ($request->boolean('remove_video') && $product->video) {
-            if (!str_starts_with($product->video, 'http')) {
-                Storage::disk('public')->delete($product->video);
+            $this->cloudinary->deleteByUrl($product->video);
+            if ($product->video_poster) {
+                $this->cloudinary->deleteByUrl($product->video_poster);
             }
             $data['video'] = null;
             $data['video_poster'] = null;
         }
 
-        // معالجة صور المعرض — تُحفظ في عمود images
-        if ($request->hasFile('gallery')) {
-            $existing = $product->images ?? [];
-            $newImages = [];
-            foreach ($request->file('gallery') as $img) {
-                if ($img && $img->isValid()) {
-                    $newImages[] = $img->store('products', 'public');
-                }
-            }
-            if (!empty($newImages)) {
-                $data['images'] = array_merge($existing, $newImages);
-            }
-        }
-        unset($data['gallery']);  // عمود غير موجود في DB
+        unset($data['gallery']);
 
         if (empty($data['stock'])) $data['stock'] = 0;
-        // 🧹 إزالة الحقول غير الموجودة في DB
+
         unset($data['variant_type'], $data['variants'], $data['barcode_mode'], $data['final_barcode'], $data['gallery'], $data['_token'], $data['_method']);
-        
+
         $product->update($data);
         $this->saveVariants($product, $request->input('variants'));
 
@@ -249,27 +262,32 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image && !str_starts_with($product->image, 'http')) {
-            Storage::disk('public')->delete($product->image);
+        // حذف الملفات من Cloudinary
+        if ($product->image) {
+            $this->cloudinary->deleteByUrl($product->image);
         }
-        if ($product->video && !str_starts_with($product->video, 'http')) {
-            Storage::disk('public')->delete($product->video);
+        if ($product->video) {
+            $this->cloudinary->deleteByUrl($product->video);
         }
+        if ($product->video_poster) {
+            $this->cloudinary->deleteByUrl($product->video_poster);
+        }
+        if (!empty($product->images) && is_array($product->images)) {
+            foreach ($product->images as $img) {
+                $this->cloudinary->deleteByUrl($img);
+            }
+        }
+
         $product->delete();
         return back()->with('success', 'تم حذف المنتج');
     }
 
-    /**
-     * حفظ Variants (مقاسات × ألوان)
-     */
     protected function saveVariants(Product $product, ?array $variants): void
     {
         if (empty($variants)) return;
 
-        // احذف القديمة
         $product->variants()->delete();
 
-        $idx = 0;
         foreach ($variants as $key => $v) {
             if (!is_array($v)) continue;
 
@@ -279,12 +297,9 @@ class ProductController extends Controller
             $stock = (int) ($v['stock'] ?? 0);
             $price = !empty($v['price']) ? (float) $v['price'] : null;
 
-            // 🧹 تجاهل الصفوف الفارغة بقوة
             if ($size === '' && $color === '') continue;
-            // تجاهل الصفوف بلا مخزون أو بيانات (اختياري — لتنظيف البيانات المشوّهة)
             if ($size === '' && $stock === 0) continue;
 
-            // SKU + Barcode
             $sku = $v['sku'] ?? ProductVariant::generateSku($product->id, $size ?: null, $color ?: null, $colorHex);
             $barcode = $v['barcode'] ?? ProductVariant::generateBarcode();
 
@@ -300,15 +315,10 @@ class ProductController extends Controller
             ]);
         }
 
-        // حدّث المخزون الإجمالي
         $totalStock = $product->variants()->sum('stock');
         $product->update(['stock' => $totalStock]);
     }
 
-
-    /**
-     * التحقق من تفرد الباركوود قبل الحفظ
-     */
     public function checkBarcode(\Illuminate\Http\Request $request)
     {
         $code = trim($request->query('code', ''));
@@ -328,5 +338,4 @@ class ProductController extends Controller
 
         return response()->json(['exists' => $exists, 'code' => $code]);
     }
-
 }
