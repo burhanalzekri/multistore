@@ -9,22 +9,56 @@ use Illuminate\Support\Facades\Log;
 
 class CloudinaryService
 {
-    protected Cloudinary $cloudinary;
+    protected ?Cloudinary $cloudinary = null;
     protected string $folder;
 
     public function __construct()
     {
+        $this->folder = config('services.cloudinary.folder', 'multistore');
+    }
+
+    /**
+     * إنشاء عميل Cloudinary عند الطلب فقط (lazy)
+     */
+    protected function client(): Cloudinary
+    {
+        if ($this->cloudinary instanceof Cloudinary) {
+            return $this->cloudinary;
+        }
+
+        $cloudName = config('services.cloudinary.cloud_name');
+        $apiKey    = config('services.cloudinary.api_key');
+        $apiSecret = config('services.cloudinary.api_secret');
+
+        if (empty($cloudName) || empty($apiKey) || empty($apiSecret)) {
+            throw new \RuntimeException(
+                'Cloudinary credentials are not configured. ' .
+                'Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.'
+            );
+        }
+
         Configuration::instance([
             'cloud' => [
-                'cloud_name' => config('services.cloudinary.cloud_name'),
-                'api_key'    => config('services.cloudinary.api_key'),
-                'api_secret' => config('services.cloudinary.api_secret'),
+                'cloud_name' => $cloudName,
+                'api_key'    => $apiKey,
+                'api_secret' => $apiSecret,
             ],
             'url' => ['secure' => true],
         ]);
 
         $this->cloudinary = new Cloudinary();
-        $this->folder     = config('services.cloudinary.folder', 'multistore');
+
+        return $this->cloudinary;
+    }
+
+    /**
+     * هل الإعدادات مكتملة؟
+     */
+    public function isConfigured(): bool
+    {
+        return !empty(config('services.cloudinary.cloud_name'))
+            && !empty(config('services.cloudinary.api_key'))
+            && !empty(config('services.cloudinary.api_secret'));
     }
 
     /**
@@ -43,9 +77,6 @@ class CloudinaryService
         return $this->doUpload($file, 'video', $subfolder);
     }
 
-    /**
-     * الرفع الفعلي
-     */
     protected function doUpload(UploadedFile $file, string $resourceType, string $subfolder): array
     {
         try {
@@ -61,7 +92,7 @@ class CloudinaryService
                 ];
             }
 
-            $result = $this->cloudinary->uploadApi()->upload(
+            $result = $this->client()->uploadApi()->upload(
                 $file->getRealPath(),
                 $options
             );
@@ -87,13 +118,10 @@ class CloudinaryService
         }
     }
 
-    /**
-     * حذف ملف من Cloudinary عبر public_id
-     */
     public function delete(string $publicId, string $resourceType = 'image'): bool
     {
         try {
-            $this->cloudinary->uploadApi()->destroy($publicId, [
+            $this->client()->uploadApi()->destroy($publicId, [
                 'resource_type' => $resourceType,
             ]);
             return true;
@@ -106,9 +134,6 @@ class CloudinaryService
         }
     }
 
-    /**
-     * حذف ملف عبر الرابط الكامل (يكتشف النوع تلقائياً)
-     */
     public function deleteByUrl(?string $url): bool
     {
         if (!$url || !$this->isCloudinaryUrl($url)) {
@@ -124,17 +149,11 @@ class CloudinaryService
         return $this->delete($publicId, $resourceType);
     }
 
-    /**
-     * هل الرابط من Cloudinary؟
-     */
     public function isCloudinaryUrl(?string $url): bool
     {
         return $url && str_contains($url, 'res.cloudinary.com');
     }
 
-    /**
-     * استخراج public_id من رابط Cloudinary
-     */
     public function extractPublicId(string $url): ?string
     {
         if (preg_match('#/(?:image|video)/upload/(?:v\d+/)?(.+?)\.[a-z0-9]+$#i', $url, $m)) {
