@@ -13,7 +13,7 @@ php artisan migrate --force --no-interaction 2>&1 | tail -20 || echo "⚠️ ت�
 # ═══ 2) Caching (سريع) ═══
 echo "⚡ Cache..."
 php artisan config:cache || true
-php artisan route:clear || true
+php artisan route:cache || true
 php artisan view:cache || true
 
 # ═══ 3) Storage link ═══
