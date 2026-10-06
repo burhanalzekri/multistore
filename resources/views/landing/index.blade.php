@@ -5751,7 +5751,7 @@ html.dark .video-role { color: #94a3b8; }
   <div class="videos-grid">
     <!-- فيديو 1 -->
     <div class="video-card" onclick="openVideoModal('أحمد الحميري', 'متجر عسل', 'v1')">
-      <div class="video-poster" style="background-image:url('/images/demo/shirt.jpg')">
+      <div class="video-poster" style="background-image:url('/images/demo/shirt.svg')">
         <div class="video-live-badge"><span class="video-live-dot"></span>جديد</div>
         <div class="video-play">▶</div>
         <div class="video-duration">0:45</div>
@@ -5767,7 +5767,7 @@ html.dark .video-role { color: #94a3b8; }
 
     <!-- فيديو 2 -->
     <div class="video-card" onclick="openVideoModal('سارة المقطري', 'أزياء صنعاء', 'v2')">
-      <div class="video-poster" style="background-image:url('/images/demo/jacket.jpg')">
+      <div class="video-poster" style="background-image:url('/images/demo/jacket.svg')">
         <div class="video-play">▶</div>
         <div class="video-duration">1:20</div>
       </div>
@@ -5782,7 +5782,7 @@ html.dark .video-role { color: #94a3b8; }
 
     <!-- فيديو 3 -->
     <div class="video-card" onclick="openVideoModal('محمد الشرعبي', 'إلكترونيات عدن', 'v3')">
-      <div class="video-poster" style="background-image:url('/images/demo/headphones.jpg')">
+      <div class="video-poster" style="background-image:url('/images/demo/headphones.svg')">
         <div class="video-play">▶</div>
         <div class="video-duration">0:30</div>
       </div>
