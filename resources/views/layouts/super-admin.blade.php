@@ -265,16 +265,6 @@
   </header>
 
   <div class="admin-super-content">
-    @if(session('success'))
-      <div style="background:#f0fdf4;color:#166534;padding:14px 18px;border-radius:14px;margin-bottom:16px;font-weight:700;font-size:13px;border:1px solid #bbf7d0;">
-        {{ session('success') }}
-      </div>
-    @endif
-    @if(session('error'))
-      <div style="background:#fef2f2;color:#991b1b;padding:14px 18px;border-radius:14px;margin-bottom:16px;font-weight:700;font-size:13px;border:1px solid #fecaca;">
-        {{ session('error') }}
-      </div>
-    @endif
 
     @yield('content')
   </div>
@@ -287,5 +277,18 @@
     document.getElementById('adminSuperOverlay').classList.toggle('show');
   }
 </script>
+@if(session('success') || session('error') || session('warning') || $errors->any())
+  <script>
+    window.__msAlerts = {
+      success: @json(session('success')),
+      error: @json(session('error')),
+      warning: @json(session('warning')),
+      validation: @json($errors->all())
+    };
+  </script>
+  <script src="{{ asset('js/ms-alerts.js') }}?v=1" defer></script>
+@endif
+<script src="{{ asset('js/ms-image-editor-v3.js') }}?v=1" defer></script>
+<script src="{{ asset('js/ms-image-preview.js') }}?v=1" defer></script>
 </body>
 </html>

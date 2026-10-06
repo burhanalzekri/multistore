@@ -26,6 +26,9 @@ class ProductController extends Controller
     public function create()
     {
         $shop = app(\App\Services\Tenant\TenantManager::class)->currentOrFallback();
+        if (!$shop) {
+            return view('dashboard.products.no-shop');
+        }
         $categories = \App\Models\Category::withoutGlobalScope('tenant')
             ->where('shop_id', $shop?->id)
             ->where('is_active', true)
@@ -36,6 +39,10 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $shop = app(\App\Services\Tenant\TenantManager::class)->currentOrFallback();
+        if (!$shop) {
+            return redirect('/super-admin/shops')->with('error', '⚠️ يجب اختيار متجر أولاً لإضافة المنتجات');
+        }
         // تنظيف
         if ($request->has('image') && !$request->hasFile('image')) {
             $request->request->remove('image');

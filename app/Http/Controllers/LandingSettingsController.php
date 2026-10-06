@@ -94,7 +94,7 @@ class LandingSettingsController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+            'image' => 'required|file|mimes:jpg,jpeg,png,webp,gif,heic,heif|max:5120',
         ]);
 
         try {
@@ -103,7 +103,8 @@ class LandingSettingsController extends Controller
 
             // الحفظ في public/images/landing/ (يُشحن مع git)
             // ملاحظة: على Render Free، لن يبقى بعد deploy
-            $path = $file->move(public_path('images/landing'), $filename);
+            $fileSize = $file->getSize();
+        $path = $file->move(public_path('images/landing'), $filename);
 
             $url = '/images/landing/' . $filename;
 
@@ -111,7 +112,7 @@ class LandingSettingsController extends Controller
                 'ok' => true,
                 'url' => $url,
                 'filename' => $filename,
-                'size' => round($file->getSize() / 1024, 1) . ' KB',
+                'size' => round($fileSize / 1024, 1) . ' KB',
             ]);
         } catch (\Throwable $e) {
             return response()->json([

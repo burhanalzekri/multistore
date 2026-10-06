@@ -20,6 +20,8 @@
   @yield('content')
 
   @stack('scripts')
+<script src="{{ asset('js/ms-image-editor-v3.js') }}?v=1" defer></script>
+<script src="{{ asset('js/ms-image-preview.js') }}?v=1" defer></script>
 <script src="{{ asset('js/ui-feedback.js') }}" defer></script>
 </body>
 </html>

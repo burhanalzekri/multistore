@@ -174,10 +174,10 @@
        4) 🎨 خيارات Variants — كامل مع التسميات الديناميكية
        ═══════════════════════════════════════════ --}}
   @php
-    $shopLbl1 = $shop->variantLabel1() ?? 'اللون';
-    $shopLbl2 = $shop->variantLabel2() ?? 'المقاس';
-    $shopIco1 = $shop->variantIcon1()  ?? '🎨';
-    $shopIco2 = $shop->variantIcon2()  ?? '📏';
+    $shopLbl1 = optional($shop)->variantLabel1() ?? 'اللون';
+    $shopLbl2 = optional($shop)->variantLabel2() ?? 'المقاس';
+    $shopIco1 = optional($shop)->variantIcon1()  ?? '🎨';
+    $shopIco2 = optional($shop)->variantIcon2()  ?? '📏';
   @endphp
 
   <div class="ez-card">
