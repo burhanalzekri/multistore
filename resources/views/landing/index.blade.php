@@ -378,10 +378,16 @@ tailwind.config = {
   .card-icon{
     width:64px;height:64px;border-radius:20px;
     display:grid;place-items:center;
-    background:linear-gradient(135deg,#fff7ed,#ffedd5);
-    color:#ea580c;
+    background:linear-gradient(135deg,#fed7aa,#fdba74);
+    color:#9a3412;
+    border:2px solid rgba(234,88,12,.25);
     margin-bottom:20px;
     transition:all .4s ease;
+    box-shadow: 0 6px 16px -4px rgba(249,115,22,.25);
+  }
+  .card-icon svg, .card-icon i {
+    stroke-width: 2.5 !important;
+    filter: drop-shadow(0 1px 2px rgba(154,52,18,.15));
   }
   .card-glow:hover .card-icon{
     transform:rotate(-8deg) scale(1.1);
@@ -561,25 +567,28 @@ tailwind.config = {
     .hero-stat:nth-child(2)::after { display: none; }
   }
   .hero-stat-value {
-    font-size: clamp(20px, 3.5vw, 28px);
+    font-size: clamp(24px, 4vw, 34px);
     font-weight: 900;
-    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    color: #c2410c;
+    background: linear-gradient(135deg, #c2410c, #9a3412);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     line-height: 1;
     letter-spacing: -0.5px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 4px rgba(194,65,12,.15);
   }
   .hero-stat-label {
-    font-size: 11px;
-    font-weight: 800;
-    color: #64748b;
+    font-size: 12.5px;
+    font-weight: 900;
+    color: #334155;
     letter-spacing: 0.3px;
   }
   .hero-stat-icon {
-    font-size: 18px;
-    margin-bottom: 4px;
+    font-size: 26px;
+    margin-bottom: 6px;
     display: block;
+    filter: drop-shadow(0 2px 4px rgba(15,23,42,.1));
   }
 
   /* ✨ Animation عند الظهور */
@@ -608,7 +617,7 @@ tailwind.config = {
     border-color: rgba(251, 191, 36, .15);
   }
   html.dark .hero-stat-label {
-    color: #94a3b8;
+    color: #cbd5e1;
   }
 </style>
 
@@ -4981,8 +4990,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="store" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">متاجر متعددة</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">متاجر متعددة</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           أنشئ وأدر أكثر من متجر من منصة واحدة — كل متجر ببياناته ومنتجاته وعملائه.
         </p>
       </div>
@@ -4991,8 +5000,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="package" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">إدارة المنتجات</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">إدارة المنتجات</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           أضف منتجاتك بصور احترافية، متغيرات، مخزون، وتصنيفات — بضغطة زر.
         </p>
       </div>
@@ -5001,8 +5010,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="shopping-bag" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">إدارة الطلبات</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">إدارة الطلبات</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           تابع الطلبات، حالاتها، وتتبع الشحنات من لوحة تحكم واحدة شاملة.
         </p>
       </div>
@@ -5011,8 +5020,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="message-square" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">دفع SMS تلقائي</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">دفع SMS تلقائي</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           النظام يقرأ رسائل التحويل البنكي ويؤكد الطلب تلقائياً في ثوانٍ.
         </p>
       </div>
@@ -5021,8 +5030,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="bar-chart-3" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">تقارير وتحليلات</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">تقارير وتحليلات</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           راقب أداء متجرك — مبيعات، أرباح، عملاء، وأفضل المنتجات لحظياً.
         </p>
       </div>
@@ -5031,8 +5040,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="card-icon">
           <i data-lucide="shield-check" style="width:30px;height:30px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">أمان وصلاحيات</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">أمان وصلاحيات</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           تحكم كامل بالصلاحيات، الأدوار، والوصول لكل قسم في النظام.
         </p>
       </div>
@@ -5130,8 +5139,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="step-icon" style="width:70px;height:70px;margin:20px auto 16px;border-radius:20px;background:linear-gradient(135deg,#fff7ed,#ffedd5);display:grid;place-items:center;color:#ea580c">
           <i data-lucide="user-plus" style="width:32px;height:32px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">أنشئ حسابك</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">أنشئ حسابك</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           سجّل بياناتك في أقل من دقيقة، وابدأ إعداد متجرك مباشرة.
         </p>
       </div>
@@ -5141,8 +5150,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="step-icon" style="width:70px;height:70px;margin:20px auto 16px;border-radius:20px;background:linear-gradient(135deg,#fff7ed,#ffedd5);display:grid;place-items:center;color:#ea580c">
           <i data-lucide="package-plus" style="width:32px;height:32px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">أضف منتجاتك</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">أضف منتجاتك</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           ارفع صور المنتجات، حدد الأسعار، المخزون، والتصنيفات.
         </p>
       </div>
@@ -5152,8 +5161,8 @@ html.dark .video-role { color: #94a3b8; }
         <div class="step-icon" style="width:70px;height:70px;margin:20px auto 16px;border-radius:20px;background:linear-gradient(135deg,#fff7ed,#ffedd5);display:grid;place-items:center;color:#ea580c">
           <i data-lucide="rocket" style="width:32px;height:32px"></i>
         </div>
-        <h3 style="font-size:20px;font-weight:900;color:#0f172a;margin-bottom:10px">ابدأ البيع</h3>
-        <p style="color:#64748b;line-height:1.8;font-size:14.5px">
+        <h3 style="font-size:20px;font-weight:900;color:#020617;margin-bottom:10px">ابدأ البيع</h3>
+        <p style="color:#334155;line-height:1.8;font-size:14.5px">
           شارك رابط متجرك، استقبل الطلبات، وتابع كل شيء من لوحة واحدة.
         </p>
       </div>
