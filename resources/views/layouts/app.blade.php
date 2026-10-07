@@ -11,6 +11,62 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#f59e0b">
+<style id="ms-critical-css">
+/* Critical CSS - FOUC prevention */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#f5f7fa;
+  color:#0f172a;
+  font-family:Cairo,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  direction:rtl;
+}
+main,.container,.wrap{padding:16px}
+.ez-card,.card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+  border:1px solid #e2e8f0;
+}
+h1,h2,h3,h4,h5,h6{margin:0 0 12px;font-weight:900;color:#0f172a}
+h1{font-size:22px}h2{font-size:18px}h3{font-size:16px}
+label{display:block;font-weight:800;font-size:13px;color:#334155;margin-bottom:6px}
+input[type=text],input[type=number],input[type=email],input[type=password],input[type=tel],input[type=url],input[type=search],select,textarea{
+  width:100%;
+  padding:11px 13px;
+  font:inherit;
+  font-size:14px;
+  color:#0f172a;
+  background:#fff;
+  border:1.5px solid #e2e8f0;
+  border-radius:10px;
+  outline:none;
+  transition:border-color .15s;
+}
+input:focus,select:focus,textarea:focus{border-color:#f59e0b;box-shadow:0 0 0 3px rgba(245,158,11,.15)}
+button,.btn{
+  font:inherit;
+  font-weight:800;
+  font-size:14px;
+  padding:11px 18px;
+  border:0;
+  border-radius:10px;
+  cursor:pointer;
+  background:#f59e0b;
+  color:#fff;
+  transition:background .15s;
+}
+button:hover,.btn:hover{background:#d97706}
+button[type=submit],.btn-primary{background:linear-gradient(135deg,#f59e0b,#ea580c)}
+input[type=file]{font-size:13px;padding:8px}
+img{max-width:100%;height:auto;display:block}
+table{width:100%;border-collapse:collapse}
+.hidden,.d-none{display:none!important}
+</style>
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" href="/css/print.css" media="print">
 <style>
