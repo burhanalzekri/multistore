@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e6f4f0"/>
+      <stop offset="1" stop-color="#cfe8df"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f0faf7"/>
+    </linearGradient>
+    <linearGradient id="sidebar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c2922"/>
+      <stop offset="1" stop-color="#071a16"/>
+    </linearGradient>
+    <linearGradient id="barGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#0c7253"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#15966d"/>
+      <stop offset="1" stop-color="#b7e84a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="15"/>
+      <feOffset dx="0" dy="20"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+  </defs>
+  
+  <rect width="1200" height="900" fill="url(#bg)"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="150" r="80" fill="#b7e84a" opacity="0.15"/>
+  <circle cx="1100" cy="750" r="100" fill="#15966d" opacity="0.12"/>
+  
+  <!-- 3D perspective container -->
+  <g transform="translate(600 480)">
+    
+    <!-- Shadow -->
+    <ellipse cx="0" cy="280" rx="450" ry="40" fill="#000" opacity="0.2"/>
+    
+    <!-- Main dashboard frame with 3D transform -->
+    <g transform="rotate(-2) skewY(2)">
+      
+      <!-- Outer frame (laptop screen) -->
+      <rect x="-480" y="-280" width="960" height="560" rx="20" fill="#0c2922" filter="url(#shadow)"/>
+      <rect x="-470" y="-270" width="940" height="540" rx="14" fill="url(#screen)"/>
+      
+      <!-- Top bar with browser dots -->
+      <rect x="-470" y="-270" width="940" height="40" rx="14" fill="#f8fbfa"/>
+      <circle cx="-440" cy="-250" r="6" fill="#ff5f57"/>
+      <circle cx="-420" cy="-250" r="6" fill="#febc2e"/>
+      <circle cx="-400" cy="-250" r="6" fill="#28c840"/>
+      <text x="0" y="-244" text-anchor="middle" font-family="Arial" font-size="14" fill="#64748b">dashboard.multistore.app</text>
+      
+      <!-- Sidebar -->
+      <rect x="-470" y="-230" width="200" height="500" fill="url(#sidebar)"/>
+      
+      <!-- Logo -->
+      <rect x="-440" y="-200" width="42" height="42" rx="11" fill="#b7e84a"/>
+      <text x="-419" y="-170" text-anchor="middle" font-family="Arial" font-size="24" font-weight="900" fill="#071a16">M</text>
+      <text x="-380" y="-178" font-family="Arial" font-size="18" font-weight="700" fill="#ffffff">MultiStore</text>
+      <text x="-380" y="-158" font-family="Arial" font-size="10" fill="#6b8f85">لوحة التحكم</text>
+      
+      <!-- Menu items -->
+      <rect x="-450" y="-120" width="160" height="42" rx="10" fill="#15966d"/>
+      <text x="-425" y="-93" font-family="Arial" font-size="14" fill="#ffffff">⌂ الرئيسية</text>
+      
+      <text x="-425" y="-53" font-family="Arial" font-size="14" fill="#8fada3">📦 المنتجات</text>
+      <text x="-425" y="-13" font-family="Arial" font-size="14" fill="#8fada3">🛒 الطلبات</text>
+      <text x="-425" y="27" font-family="Arial" font-size="14" fill="#8fada3">👥 العملاء</text>
+      <text x="-425" y="67" font-family="Arial" font-size="14" fill="#8fada3">📊 التقارير</text>
+      <text x="-425" y="107" font-family="Arial" font-size="14" fill="#8fada3">⚙️ الإعدادات</text>
+      
+      <!-- Main content area -->
+      <text x="-240" y="-190" font-family="Arial" font-size="26" font-weight="800" fill="#071a16">لوحة التحكم</text>
+      <text x="-240" y="-165" font-family="Arial" font-size="13" fill="#61716c">نظرة عامة على أداء متجرك</text>
+      
+      <!-- Stats cards -->
+      <g transform="translate(-240 -130)">
+        <rect x="0" y="0" width="220" height="100" rx="12" fill="#f0faf7" stroke="#d9ece5" stroke-width="1"/>
+        <text x="15" y="25" font-family="Arial" font-size="11" fill="#61716c">المبيعات</text>
+        <text x="15" y="62" font-family="Arial" font-size="26" font-weight="900" fill="#071a16">1.24M</text>
+        <text x="15" y="85" font-family="Arial" font-size="11" font-weight="700" fill="#15966d">↑ 18%</text>
+        <circle cx="190" cy="30" r="14" fill="#dff5ec"/>
+        <text x="190" y="36" text-anchor="middle" font-size="14">💰</text>
+      </g>
+      
+      <g transform="translate(0 -130)">
+        <rect x="0" y="0" width="220" height="100" rx="12" fill="#f0faf7" stroke="#d9ece5" stroke-width="1"/>
+        <text x="15" y="25" font-family="Arial" font-size="11" fill="#61716c">الطلبات</text>
+        <text x="15" y="62" font-family="Arial" font-size="26" font-weight="900" fill="#071a16">324</text>
+        <text x="15" y="85" font-family="Arial" font-size="11" font-weight="700" fill="#15966d">↑ 12%</text>
+        <circle cx="190" cy="30" r="14" fill="#dff5ec"/>
+        <text x="190" y="36" text-anchor="middle" font-size="14">📦</text>
+      </g>
+      
+      <g transform="translate(240 -130)">
+        <rect x="0" y="0" width="220" height="100" rx="12" fill="#f0faf7" stroke="#d9ece5" stroke-width="1"/>
+        <text x="15" y="25" font-family="Arial" font-size="11" fill="#61716c">العملاء</text>
+        <text x="15" y="62" font-family="Arial" font-size="26" font-weight="900" fill="#071a16">1,287</text>
+        <text x="15" y="85" font-family="Arial" font-size="11" font-weight="700" fill="#15966d">↑ 9%</text>
+        <circle cx="190" cy="30" r="14" fill="#dff5ec"/>
+        <text x="190" y="36" text-anchor="middle" font-size="14">👥</text>
+      </g>
+      
+      <!-- Chart -->
+      <g transform="translate(-240 0)">
+        <rect x="0" y="0" width="700" height="220" rx="12" fill="#f0faf7" stroke="#d9ece5" stroke-width="1"/>
+        <text x="20" y="30" font-family="Arial" font-size="14" font-weight="700" fill="#071a16">المبيعات — آخر 7 أيام</text>
+        <text x="660" y="30" text-anchor="end" font-family="Arial" font-size="11" fill="#61716c">هذا الأسبوع</text>
+        
+        <!-- Grid lines -->
+        <g stroke="#d9ece5" stroke-width="1" stroke-dasharray="3 3">
+          <line x1="20" y1="80" x2="680" y2="80"/>
+          <line x1="20" y1="130" x2="680" y2="130"/>
+          <line x1="20" y1="180" x2="680" y2="180"/>
+        </g>
+        
+        <!-- Line chart -->
+        <polyline points="40,180 130,155 220,165 310,110 400,120 490,70 580,85 660,50" 
+                  fill="none" stroke="url(#lineGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="40,180 130,155 220,165 310,110 400,120 490,70 580,85 660,50 660,200 40,200" 
+                 fill="#15966d" opacity="0.08"/>
+        
+        <!-- Data points -->
+        <circle cx="40" cy="180" r="5" fill="#15966d"/>
+        <circle cx="220" cy="165" r="5" fill="#15966d"/>
+        <circle cx="400" cy="120" r="5" fill="#15966d"/>
+        <circle cx="580" cy="85" r="5" fill="#15966d"/>
+      </g>
+      
+      <!-- Recent orders -->
+      <g transform="translate(-240 240)">
+        <rect x="0" y="0" width="700" height="140" rx="12" fill="#f0faf7" stroke="#d9ece5" stroke-width="1"/>
+        <text x="20" y="28" font-family="Arial" font-size="13" font-weight="700" fill="#071a16">آخر الطلبات</text>
+        
+        <rect x="20" y="45" width="200" height="35" rx="8" fill="#ffffff" stroke="#e6f0eb" stroke-width="1"/>
+        <text x="35" y="68" font-family="Arial" font-size="12" fill="#071a16">#1024 — 25,000 ر.ي</text>
+        <circle cx="205" cy="62" r="6" fill="#15966d"/>
+        
+        <rect x="240" y="45" width="200" height="35" rx="8" fill="#ffffff" stroke="#e6f0eb" stroke-width="1"/>
+        <text x="255" y="68" font-family="Arial" font-size="12" fill="#071a16">#1023 — 18,500 ر.ي</text>
+        <circle cx="425" cy="62" r="6" fill="#f3c969"/>
+        
+        <rect x="460" y="45" width="220" height="35" rx="8" fill="#ffffff" stroke="#e6f0eb" stroke-width="1"/>
+        <text x="475" y="68" font-family="Arial" font-size="12" fill="#071a16">#1022 — 32,000 ر.ي</text>
+        <circle cx="665" cy="62" r="6" fill="#15966d"/>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1291,7 +1291,22 @@ $maxPrice = request('max_price');
 <header class="header">
   <div class="wrap head">
     <a class="brand" href="/shop">
-      <span class="brandmark"><i data-lucide="shopping-bag"></i></span>
+      @php
+        $__logoUrl = null;
+        if (isset($shop) && $shop && !empty($shop->logo)) {
+          $__l = $shop->logo;
+          $__logoUrl = (str_starts_with($__l, "http://") || str_starts_with($__l, "https://"))
+            ? $__l
+            : \Illuminate\Support\Facades\Storage::url($__l);
+        }
+      @endphp
+      <span class="brandmark" style="overflow:hidden;padding:0;background:none;">
+        @if($__logoUrl)
+          <img src="{{ $__logoUrl }}" alt="{{ $shopName }}" style="width:34px;height:34px;object-fit:cover;border-radius:10px;display:block;" onerror="this.style.display='none';this.parentNode.innerHTML='<i data-lucide=shopping-bag></i>';">
+        @else
+          <i data-lucide="shopping-bag"></i>
+        @endif
+      </span>
       <span class="brandname">{{ $shopName }}</span>
     </a>
     <form class="search ac-wrap" action="/shop" method="GET" autocomplete="off">

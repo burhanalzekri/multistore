@@ -269,7 +269,7 @@ Route::middleware(["auth", "super_admin"])->prefix("super-admin")->group(functio
     // الأكثر تحديدًا أولاً ⚠️
     Route::get("/shops/create", [App\Http\Controllers\ShopManagementController::class, "create"]);
     Route::post("/shops", [App\Http\Controllers\ShopManagementController::class, "store"]);
-    Route::get("/shops", [App\Http\Controllers\ShopManagementController::class, "index"]);
+    Route::get("/shops", [App\Http\Controllers\ShopManagementController::class, "index"])->name("super-admin.shops");
 
     // الأسطر العامة في النهاية
     Route::get('/shops/{shop}/edit', [App\Http\Controllers\ShopManagementController::class, 'edit'])->name('super-admin.shops.edit');

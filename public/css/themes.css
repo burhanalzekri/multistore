@@ -1,0 +1,285 @@
+/* ═══════════════════════════════════════════
+   MultiStore — Theme System
+   4 أوضاع: نهار/ليل/مطر/غروب
+   ═══════════════════════════════════════════ */
+
+:root {
+    --ms-green: #10b981;
+    --ms-green-dark: #059669;
+    --ms-green-light: #34d399;
+    --ms-green-50: #ecfdf5;
+    --ms-navy: #0a1929;
+    --ms-navy-2: #0f2942;
+    --ms-bg: #f5f7fa;
+    --ms-surface: #ffffff;
+    --ms-surface-soft: #f8fafc;
+    --ms-text: #0f172a;
+    --ms-muted: #64748b;
+    --ms-border: #e5e7eb;
+    --ms-border-2: #e2e8f0;
+}
+
+/* ═══ ☀️ النهار (افتراضي) ═══ */
+body[data-ms-theme="light"],
+body:not([data-ms-theme]) {
+    background: var(--ms-bg);
+    color: var(--ms-text);
+}
+
+/* ═══ 🌙 الليل ═══ */
+body[data-ms-theme="dark"] {
+    --ms-bg: #071310;
+    --ms-surface: #0c1f1a;
+    --ms-surface-soft: #0f2620;
+    --ms-text: #e8f5f0;
+    --ms-muted: #8ba69e;
+    --ms-border: rgba(183,232,74,.12);
+    --ms-border-2: rgba(183,232,74,.20);
+    background: var(--ms-bg);
+    color: var(--ms-text);
+}
+body[data-ms-theme="dark"] .card,
+body[data-ms-theme="dark"] .ez-card,
+body[data-ms-theme="dark"] .feature-card,
+body[data-ms-theme="dark"] .price-card,
+body[data-ms-theme="dark"] .stat-card,
+body[data-ms-theme="dark"] .info-card {
+    background: var(--ms-surface);
+    border-color: var(--ms-border-2);
+    color: var(--ms-text);
+}
+body[data-ms-theme="dark"] .navbar,
+body[data-ms-theme="dark"] nav {
+    background: rgba(2,16,12,.95) !important;
+}
+body[data-ms-theme="dark"] h1,
+body[data-ms-theme="dark"] h2,
+body[data-ms-theme="dark"] h3,
+body[data-ms-theme="dark"] h4,
+body[data-ms-theme="dark"] h5 {
+    color: var(--ms-text);
+}
+body[data-ms-theme="dark"] input,
+body[data-ms-theme="dark"] textarea,
+body[data-ms-theme="dark"] select {
+    background: var(--ms-surface-soft);
+    border-color: var(--ms-border-2);
+    color: var(--ms-text);
+}
+body[data-ms-theme="dark"] table {
+    color: var(--ms-text);
+}
+body[data-ms-theme="dark"] thead {
+    background: var(--ms-surface-soft);
+}
+body[data-ms-theme="dark"] tbody tr {
+    border-color: var(--ms-border);
+}
+body[data-ms-theme="dark"] tbody tr:hover {
+    background: rgba(183,232,74,.04);
+}
+
+/* ═══ 🌧️ المطر ═══ */
+body[data-ms-theme="rain"] {
+    --ms-green: #2c7fb8;
+    --ms-green-dark: #1c5c8c;
+    --ms-green-light: #6fb3d9;
+    --ms-green-50: #e8f2f9;
+    --ms-bg: #eef4f8;
+    --ms-surface: #ffffff;
+    --ms-surface-soft: #dce9f2;
+    --ms-text: #0a1e2e;
+    --ms-muted: #4d6b83;
+    --ms-border: rgba(44,127,184,.12);
+    --ms-border-2: rgba(44,127,184,.25);
+    background: var(--ms-bg);
+    color: var(--ms-text);
+}
+body[data-ms-theme="rain"] .card,
+body[data-ms-theme="rain"] .ez-card,
+body[data-ms-theme="rain"] .feature-card {
+    background: var(--ms-surface);
+}
+body[data-ms-theme="rain"] .btn-primary,
+body[data-ms-theme="rain"] [class*="btn-primary"] {
+    background: linear-gradient(145deg, #6fb3d9, #2c7fb8) !important;
+}
+/* تأثير المطر في الخلفية */
+body[data-ms-theme="rain"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(transparent 95%, rgba(44,127,184,.08) 100%),
+        linear-gradient(90deg, transparent 95%, rgba(44,127,184,.08) 100%);
+    background-size: 24px 24px;
+    animation: msRainMove 2s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+    opacity: .35;
+}
+@keyframes msRainMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 24px; }
+}
+
+/* ═══ 🌅 الغروب ═══ */
+body[data-ms-theme="sunset"] {
+    --ms-green: #e87a3f;
+    --ms-green-dark: #c45a1e;
+    --ms-green-light: #ffb347;
+    --ms-green-50: #fff3e8;
+    --ms-bg: #fff9f5;
+    --ms-surface: #ffffff;
+    --ms-surface-soft: #ffeedd;
+    --ms-text: #2d1810;
+    --ms-muted: #8b6952;
+    --ms-border: rgba(232,122,63,.12);
+    --ms-border-2: rgba(232,122,63,.25);
+    background: var(--ms-bg);
+    color: var(--ms-text);
+}
+body[data-ms-theme="sunset"] .btn-primary,
+body[data-ms-theme="sunset"] [class*="btn-primary"] {
+    background: linear-gradient(145deg, #ffb347, #e87a3f) !important;
+}
+body[data-ms-theme="sunset"] .card,
+body[data-ms-theme="sunset"] .ez-card {
+    background: var(--ms-surface);
+}
+
+/* ═══════════════════════════════════════════
+   THEME SWITCHER UI
+   ═══════════════════════════════════════════ */
+.ms-theme-switcher {
+    position: fixed;
+    left: 20px;
+    bottom: 80px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+}
+.ms-theme-switcher.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.ms-theme-toggle {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1.5px solid var(--ms-border-2);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(7,26,22,.15);
+    transition: all .25s;
+}
+.ms-theme-toggle:hover {
+    transform: scale(1.08) rotate(-8deg);
+    border-color: var(--ms-green);
+    box-shadow: 0 12px 32px rgba(21,150,109,.25);
+}
+.ms-theme-menu {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: #ffffff;
+    border: 1.5px solid var(--ms-border-2);
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 12px 32px rgba(7,26,22,.18);
+}
+.ms-theme-menu.open {
+    display: flex;
+    animation: msSlideUp .25s ease;
+}
+@keyframes msSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.ms-theme-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: transparent;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 0;
+    transition: all .2s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+.ms-theme-option:hover {
+    background: var(--ms-surface-soft);
+    transform: translateX(-4px);
+}
+.ms-theme-option.active {
+    background: var(--ms-green-50);
+    color: var(--ms-green-dark);
+}
+.ms-theme-option-icon {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+body[data-ms-theme="dark"] .ms-theme-toggle,
+body[data-ms-theme="dark"] .ms-theme-menu {
+    background: var(--ms-surface);
+    color: var(--ms-text);
+    border-color: var(--ms-border-2);
+}
+body[data-ms-theme="dark"] .ms-theme-option {
+    color: var(--ms-text);
+}
+@media (max-width: 760px) {
+    .ms-theme-switcher {
+        left: 14px;
+        bottom: 70px;
+    }
+    .ms-theme-toggle {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+    }
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+.ms-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+}
+.ms-reveal.ms-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover effects على البطاقات */
+.card:hover,
+.ez-card:hover,
+.feature-card:hover,
+.price-card:hover,
+.stat-card:hover {
+    transform: translateY(-4px);
+    transition: all .35s cubic-bezier(.4,0,.2,1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ms-reveal { opacity: 1 !important; transform: none !important; }
+    * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

@@ -78,7 +78,7 @@ class ShopManagementController extends Controller
             'description'   => 'nullable|string|max:1000',
             'primary_color' => 'nullable|string|max:20',
             'status'        => 'required|in:active,trial,suspended',
-            'logo'          => 'nullable|image|max:2048',
+            'logo'          => 'nullable|file|mimetypes:image/*|max:5120',
         ]);
 
         // معالجة الشعار

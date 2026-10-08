@@ -1,0 +1,172 @@
+/* MultiStore UI Polish — shared visual layer */
+:root {
+  --ms-gradient: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  --ms-gradient-soft: linear-gradient(135deg, rgba(245,158,11,.12), rgba(249,115,22,.08));
+  --ms-ring: 0 0 0 4px rgba(245,158,11,.16);
+  --ms-ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+html { scroll-behavior: smooth; }
+body { text-rendering: optimizeLegibility; }
+:focus-visible { outline: 3px solid rgba(245,158,11,.55); outline-offset: 3px; }
+
+/* Softer dashboard canvas and clearer content hierarchy */
+.shine-main {
+  background:
+    radial-gradient(circle at 94% 2%, rgba(245,158,11,.08), transparent 24rem),
+    radial-gradient(circle at 4% 86%, rgba(59,130,246,.045), transparent 22rem),
+    var(--bg);
+}
+html.dark .shine-main {
+  background:
+    radial-gradient(circle at 94% 2%, rgba(245,158,11,.09), transparent 24rem),
+    radial-gradient(circle at 4% 86%, rgba(59,130,246,.08), transparent 22rem),
+    var(--bg);
+}
+.shine-content { max-width: 1480px; }
+
+.shine-header {
+  box-shadow: 0 1px 0 rgba(15,23,42,.035), 0 8px 24px rgba(15,23,42,.025);
+}
+.shine-header-title h2 { letter-spacing: -.35px; }
+
+.shine-welcome {
+  isolation: isolate;
+  box-shadow: 0 18px 45px -25px rgba(245,158,11,.65);
+  transition: transform .35s var(--ms-ease), box-shadow .35s var(--ms-ease);
+}
+.shine-welcome:hover { transform: translateY(-2px); box-shadow: 0 24px 55px -25px rgba(245,158,11,.72); }
+.shine-welcome h2 { letter-spacing: -.5px; }
+
+.shine-stats { align-items: stretch; }
+.shine-stat {
+  min-height: 154px;
+  border: 1px solid rgba(226,232,240,.9);
+  box-shadow: 0 10px 30px -22px rgba(15,23,42,.5);
+  transition: transform .3s var(--ms-ease), box-shadow .3s var(--ms-ease), border-color .3s ease;
+}
+.shine-stat:hover { transform: translateY(-5px); box-shadow: 0 18px 35px -20px rgba(15,23,42,.4); border-color: rgba(245,158,11,.3); }
+html.dark .shine-stat { border-color: rgba(71,85,105,.7); }
+.shine-stat-icon { box-shadow: 0 8px 18px -8px currentColor; }
+.shine-stat-value { letter-spacing: -.8px; }
+
+.shine-card {
+  border: 1px solid rgba(226,232,240,.85);
+  box-shadow: 0 12px 32px -26px rgba(15,23,42,.55);
+  transition: box-shadow .3s ease, border-color .3s ease;
+}
+.shine-card:hover { border-color: rgba(245,158,11,.24); box-shadow: 0 18px 38px -24px rgba(15,23,42,.5); }
+html.dark .shine-card { border-color: rgba(71,85,105,.75); }
+.shine-card-header { min-height: 58px; }
+.shine-list-item { transition: background .2s ease, transform .2s var(--ms-ease); }
+.shine-list-item:hover { transform: translateX(-3px); }
+
+.shine-actions { gap: 14px; }
+.shine-action {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(226,232,240,.85);
+  box-shadow: 0 10px 28px -24px rgba(15,23,42,.55);
+  transition: transform .3s var(--ms-ease), box-shadow .3s var(--ms-ease), border-color .3s ease;
+}
+.shine-action::after {
+  content: '';
+  position: absolute;
+  inset: auto -25px -45px auto;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--ms-gradient-soft);
+  pointer-events: none;
+}
+.shine-action:hover { transform: translateY(-5px); box-shadow: 0 20px 36px -24px rgba(15,23,42,.55); border-color: rgba(245,158,11,.35); }
+html.dark .shine-action { border-color: rgba(71,85,105,.75); }
+
+.shine-btn, .shine-icon-btn, .shine-theme-toggle { transition: transform .2s var(--ms-ease), box-shadow .2s ease, background .2s ease; }
+.shine-btn:hover, .shine-icon-btn:hover { transform: translateY(-2px); }
+.shine-btn:active, .shine-icon-btn:active { transform: translateY(0) scale(.97); }
+
+/* Better tables/forms across dashboard views */
+.shine-content table, .admin-main table {
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.shine-content table thead th, .admin-main table thead th { background: var(--ms-gradient-soft); color: var(--text-muted); font-size: 11px; letter-spacing: .2px; }
+.shine-content table tbody tr, .admin-main table tbody tr { transition: background .2s ease; }
+.shine-content table tbody tr:hover, .admin-main table tbody tr:hover { background: rgba(245,158,11,.045); }
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: var(--ms-ring) !important;
+}
+
+/* Entrance motion; JS adds .ms-reveal to safe content blocks */
+.ms-reveal { opacity: 0; transform: translateY(12px); transition: opacity .55s ease, transform .55s var(--ms-ease); }
+.ms-reveal.is-visible { opacity: 1; transform: none; }
+
+@media (max-width: 640px) {
+  .shine-content { padding-top: 14px; }
+  .shine-stats { gap: 10px; }
+  .shine-stat { min-height: 132px; padding: 14px; }
+  .shine-stat-value { font-size: 24px; }
+  .shine-actions { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .shine-action { padding: 14px; }
+  .shine-action p { font-size: 11px; }
+  .shine-card { border-radius: 16px; }
+  .shine-content table, .admin-main table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .ms-reveal { opacity: 1; transform: none; }
+}
+
+
+/* Shared accessibility and interaction rules */
+.shine-content a:focus-visible,
+.admin-main a:focus-visible,
+.shine-btn:focus-visible,
+.shine-icon-btn:focus-visible,
+.shine-theme-toggle:focus-visible {
+  outline: 3px solid rgba(245, 158, 11, .55);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+.shine-btn:disabled,
+.shine-icon-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.ui-empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 18px;
+}
+.ui-empty-state strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 15px;
+}
+.ui-status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, .12);
+}

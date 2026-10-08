@@ -11,6 +11,9 @@
   body { margin: 0; background: #f5f7fa; }
 </style>
 @stack('styles')
+
+{{-- ═══ MultiStore Theme System ═══ --}}
+<link rel="stylesheet" href="{{ asset('css/themes.css') }}?v=1">
 </head>
 <body>
 
@@ -21,5 +24,11 @@
 
   @stack('scripts')
 <script src="{{ asset('js/ui-feedback.js') }}" defer></script>
+
+{{-- ═══ MultiStore Theme Switcher ═══ --}}
+@include('components.theme-switcher')
+<script src="{{ asset('js/theme-manager.js') }}?v=1" defer></script>
+<script src="{{ asset('js/animations.js') }}?v=1" defer></script>
+<script src="{{ asset('js/explainer.js') }}?v=1" defer></script>
 </body>
 </html>

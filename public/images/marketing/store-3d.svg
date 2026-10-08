@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b3d2e"/>
+      <stop offset="1" stop-color="#071a16"/>
+    </linearGradient>
+    <linearGradient id="topFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d9f5c4"/>
+      <stop offset="1" stop-color="#b7e84a"/>
+    </linearGradient>
+    <linearGradient id="leftFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#15966d"/>
+      <stop offset="1" stop-color="#0c7253"/>
+    </linearGradient>
+    <linearGradient id="rightFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0c7253"/>
+      <stop offset="1" stop-color="#064e3b"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  
+  <!-- Stars/particles -->
+  <g fill="#b7e84a" opacity="0.6">
+    <circle cx="150" cy="120" r="2"/>
+    <circle cx="1050" cy="180" r="2"/>
+    <circle cx="200" cy="700" r="1.5"/>
+    <circle cx="1000" cy="750" r="1.5"/>
+    <circle cx="600" cy="100" r="1"/>
+    <circle cx="400" cy="200" r="1.5"/>
+  </g>
+  
+  <!-- Glow behind building -->
+  <ellipse cx="600" cy="500" rx="400" ry="250" fill="#15966d" opacity="0.25" filter="url(#glow)"/>
+  
+  <!-- 3D Store Building - Isometric -->
+  <g transform="translate(600 480)">
+    
+    <!-- Base/floor shadow -->
+    <ellipse cx="0" cy="200" rx="280" ry="60" fill="#000" opacity="0.4"/>
+    
+    <!-- Right side wall -->
+    <path d="M 0,-100 L 240,20 L 240,220 L 0,100 Z" fill="url(#rightFace)"/>
+    
+    <!-- Left side wall -->
+    <path d="M 0,-100 L -240,20 L -240,220 L 0,100 Z" fill="url(#leftFace)"/>
+    
+    <!-- Top face (roof) -->
+    <path d="M 0,-100 L 240,20 L 0,140 L -240,20 Z" fill="url(#topFace)"/>
+    
+    <!-- Awning stripes -->
+    <path d="M -240,20 L 0,140 L 0,160 L -240,40 Z" fill="#b7e84a" opacity="0.9"/>
+    <path d="M 0,140 L 240,20 L 240,40 L 0,160 Z" fill="#a3d63d" opacity="0.9"/>
+    
+    <!-- Shop sign (on top face) -->
+    <g transform="translate(0 -30) skewX(-26) skewY(6)">
+      <rect x="-100" y="-30" width="200" height="60" rx="8" fill="#071a16"/>
+      <text x="0" y="10" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="#b7e84a">MultiStore</text>
+    </g>
+    
+    <!-- Left window (store front) -->
+    <g transform="translate(-120 60) skewY(26)">
+      <rect x="-60" y="-40" width="120" height="120" rx="6" fill="#0a3d2b"/>
+      <rect x="-52" y="-32" width="104" height="104" rx="4" fill="#34d399" opacity="0.4"/>
+      <!-- Products display -->
+      <circle cx="-25" cy="20" r="12" fill="#b7e84a"/>
+      <circle cx="5" cy="20" r="12" fill="#f3c969"/>
+      <circle cx="35" cy="20" r="12" fill="#ff6b6b"/>
+      <rect x="-40" y="40" width="80" height="6" fill="#b7e84a" opacity="0.6"/>
+    </g>
+    
+    <!-- Right window -->
+    <g transform="translate(120 60) skewY(-26)">
+      <rect x="-60" y="-40" width="120" height="120" rx="6" fill="#0a3d2b"/>
+      <rect x="-52" y="-32" width="104" height="104" rx="4" fill="#34d399" opacity="0.35"/>
+      <!-- Shopping cart icon -->
+      <path d="M -20 -5 L -15 15 L 20 15 L 25 -5 Z" fill="none" stroke="#b7e84a" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="-10" cy="22" r="3" fill="#b7e84a"/>
+      <circle cx="18" cy="22" r="3" fill="#b7e84a"/>
+      <line x1="-22" y1="-10" x2="-15" y2="-5" stroke="#b7e84a" stroke-width="3"/>
+    </g>
+    
+    <!-- Door -->
+    <g transform="translate(0 100)">
+      <rect x="-30" y="-50" width="60" height="100" rx="4" fill="#0a3d2b" transform="skewY(0)"/>
+      <rect x="-24" y="-44" width="48" height="88" rx="3" fill="#34d399" opacity="0.3"/>
+      <circle cx="15" cy="0" r="3" fill="#b7e84a"/>
+    </g>
+    
+    <!-- Floating elements - 3D coins/cubes -->
+    <g transform="translate(-350 -100)">
+      <ellipse cx="0" cy="0" rx="35" ry="12" fill="#b7e84a" opacity="0.3"/>
+      <path d="M -30 -20 L 0 -35 L 30 -20 L 0 -5 Z" fill="#f3c969"/>
+      <path d="M 30 -20 L 30 5 L 0 20 L 0 -5 Z" fill="#d4a742"/>
+      <path d="M -30 -20 L -30 5 L 0 20 L 0 -5 Z" fill="#e5b94a"/>
+    </g>
+    
+    <g transform="translate(350 -150)">
+      <ellipse cx="0" cy="0" rx="30" ry="10" fill="#34d399" opacity="0.3"/>
+      <path d="M -25 -15 L 0 -28 L 25 -15 L 0 -2 Z" fill="#34d399"/>
+      <path d="M 25 -15 L 25 5 L 0 18 L 0 -2 Z" fill="#0c7253"/>
+      <path d="M -25 -15 L -25 5 L 0 18 L 0 -2 Z" fill="#10b981"/>
+    </g>
+    
+    <g transform="translate(-300 200)">
+      <ellipse cx="0" cy="0" rx="25" ry="8" fill="#b7e84a" opacity="0.3"/>
+      <path d="M -20 -12 L 0 -22 L 20 -12 L 0 -2 Z" fill="#f3c969"/>
+      <path d="M 20 -12 L 20 3 L 0 13 L 0 -2 Z" fill="#d4a742"/>
+      <path d="M -20 -12 L -20 3 L 0 13 L 0 -2 Z" fill="#e5b94a"/>
+    </g>
+  </g>
+  
+  <!-- Sparkles -->
+  <g fill="#b7e84a">
+    <path d="M 300 300 L 305 315 L 320 320 L 305 325 L 300 340 L 295 325 L 280 320 L 295 315 Z" opacity="0.8"/>
+    <path d="M 900 250 L 903 260 L 913 263 L 903 266 L 900 276 L 897 266 L 887 263 L 897 260 Z" opacity="0.6"/>
+    <path d="M 250 650 L 253 660 L 263 663 L 253 666 L 250 676 L 247 666 L 237 663 L 247 660 Z" opacity="0.5"/>
+  </g>
+</svg>

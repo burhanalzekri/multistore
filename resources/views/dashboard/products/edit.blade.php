@@ -154,7 +154,7 @@
 
     <div id="ve-colors" class="ez-vsection" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-weight:900;font-size:13px;">{{ $shop->variantIcon1() ?? "🎨" }} {{ $shop->variantLabel1() ?? "الألوان" }}</span>
+        <span style="font-weight:900;font-size:13px;">{{ optional($shop)->variantIcon1() ?? "🎨" }} {{ optional($shop)->variantLabel1() ?? "الألوان" }}</span>
         <button type="button" onclick="veAddColor()" class="ez-btn-sm">+ لون</button>
       </div>
       <div id="ve-colors-list"></div>
@@ -162,7 +162,7 @@
 
     <div id="ve-sizes" class="ez-vsection" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-weight:900;font-size:13px;">{{ $shop->variantIcon2() ?? "📏" }} {{ $shop->variantLabel2() ?? "المقاسات" }}</span>
+        <span style="font-weight:900;font-size:13px;">{{ optional($shop)->variantIcon2() ?? "📏" }} {{ optional($shop)->variantLabel2() ?? "المقاسات" }}</span>
         <button type="button" onclick="veAddSize()" class="ez-btn-sm">+ مقاس</button>
       </div>
       <div id="ve-sizes-list"></div>
@@ -170,13 +170,13 @@
 
     <div id="ve-both" class="ez-vsection" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-weight:900;font-size:13px;">{{ $shop->variantIcon1() ?? "🎨" }} {{ $shop->variantLabel1() ?? "الألوان" }}</span>
+        <span style="font-weight:900;font-size:13px;">{{ optional($shop)->variantIcon1() ?? "🎨" }} {{ optional($shop)->variantLabel1() ?? "الألوان" }}</span>
         <button type="button" onclick="veBothAddColor()" class="ez-btn-sm">+ لون</button>
       </div>
       <div id="ve-both-colors"></div>
 
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:14px;">
-        <span style="font-weight:900;font-size:13px;">{{ $shop->variantIcon2() ?? "📏" }} {{ $shop->variantLabel2() ?? "المقاسات" }}</span>
+        <span style="font-weight:900;font-size:13px;">{{ optional($shop)->variantIcon2() ?? "📏" }} {{ optional($shop)->variantLabel2() ?? "المقاسات" }}</span>
         <button type="button" onclick="veBothAddSize()" class="ez-btn-sm">+ مقاس</button>
       </div>
       <div id="ve-both-sizes"></div>
