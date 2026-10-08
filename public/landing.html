@@ -1599,6 +1599,290 @@
             }
         }
 
+
+        /* ═══════════════════════════════════════════
+           THEMES — ليل/نهار/مطر/غروب
+        ═══════════════════════════════════════════ */
+        /* زر تبديل الأوضاع */
+        .theme-switcher {
+            position: fixed;
+            left: 20px;
+            bottom: 80px;
+            z-index: 950;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all .3s cubic-bezier(.4,0,.2,1);
+        }
+        .theme-switcher.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .theme-toggle-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #fff;
+            color: var(--text);
+            border: 1.5px solid var(--border-2);
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(7,26,22,.15);
+            transition: all .25s;
+        }
+        .theme-toggle-btn:hover {
+            transform: scale(1.08) rotate(-8deg);
+            border-color: var(--green);
+            box-shadow: 0 12px 32px rgba(21,150,109,.25);
+        }
+        .theme-toggle-btn.active-theme {
+            background: var(--green);
+            color: #fff;
+            border-color: var(--green);
+        }
+        .theme-menu {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: #fff;
+            border: 1.5px solid var(--border-2);
+            border-radius: 18px;
+            padding: 8px;
+            box-shadow: 0 12px 32px rgba(7,26,22,.18);
+        }
+        .theme-menu.open {
+            display: flex;
+            animation: slideUp .25s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 0;
+            transition: all .2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .theme-option:hover {
+            background: var(--soft);
+            transform: translateX(-4px);
+        }
+        .theme-option.active {
+            background: var(--green-50);
+            color: var(--green-dark);
+        }
+        .theme-option-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+        @media (max-width: 760px) {
+            .theme-switcher {
+                left: 14px;
+                bottom: 70px;
+            }
+            .theme-toggle-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
+
+        /* ═══════════════════════════════════════════
+           الوضع الليلي (Dark)
+        ═══════════════════════════════════════════ */
+        body[data-theme="dark"] {
+            --bg: #071310;
+            --surface: #0c1f1a;
+            --surface-soft: #0f2620;
+            --dark: #02100c;
+            --dark-2: #051a14;
+            --text: #e8f5f0;
+            --muted: #8ba69e;
+            --border: rgba(183,232,74,.12);
+            --border-2: rgba(183,232,74,.20);
+            --green-light: #0a3d31;
+            --shadow: 0 25px 70px rgba(0,0,0,.5);
+        }
+        body[data-theme="dark"] .navbar {
+            background: rgba(2,16,12,.95);
+        }
+        body[data-theme="dark"] .intro,
+        body[data-theme="dark"] .features,
+        body[data-theme="dark"] .benefits,
+        body[data-theme="dark"] .faq,
+        body[data-theme="dark"] .cta {
+            background: var(--bg);
+        }
+        body[data-theme="dark"] .intro-card,
+        body[data-theme="dark"] .feature-card,
+        body[data-theme="dark"] .step,
+        body[data-theme="dark"] .price-card,
+        body[data-theme="dark"] .faq-item,
+        body[data-theme="dark"] .benefit {
+            background: var(--surface);
+        }
+        body[data-theme="dark"] .how,
+        body[data-theme="dark"] .pricing,
+        body[data-theme="dark"] .showcase {
+            background: var(--surface-soft);
+        }
+        body[data-theme="dark"] .feature-card.dark {
+            background: #000;
+        }
+        body[data-theme="dark"] .feature-card.green {
+            background: linear-gradient(145deg, #0a3d31, #0c2a22);
+        }
+        body[data-theme="dark"] .explain-box,
+        body[data-theme="dark"] .modal-box,
+        body[data-theme="dark"] .theme-toggle-btn,
+        body[data-theme="dark"] .theme-menu {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border-2);
+        }
+        body[data-theme="dark"] .explain-step,
+        body[data-theme="dark"] .explain-tip {
+            background: var(--surface-soft);
+            border-color: var(--border-2);
+        }
+        body[data-theme="dark"] .explain-tip {
+            background: linear-gradient(135deg, #1a1f0a, #2d2e0f);
+            color: #f3d682;
+        }
+        body[data-theme="dark"] .explain-box h3,
+        body[data-theme="dark"] .explain-box h4,
+        body[data-theme="dark"] .explain-step-content h4 {
+            color: var(--text);
+        }
+        body[data-theme="dark"] .theme-option {
+            color: var(--text);
+        }
+        body[data-theme="dark"] .theme-option.active {
+            background: var(--green-light);
+            color: var(--lime);
+        }
+        body[data-theme="dark"] .store-preview,
+        body[data-theme="dark"] .showcase-image {
+            background: var(--surface);
+        }
+
+        /* ═══════════════════════════════════════════
+           وضع المطر (Rain)
+        ═══════════════════════════════════════════ */
+        body[data-theme="rain"] {
+            --bg: #eef4f8;
+            --surface: #ffffff;
+            --surface-soft: #dce9f2;
+            --dark: #0a1e2e;
+            --dark-2: #0f2942;
+            --text: #0a1e2e;
+            --muted: #4d6b83;
+            --green: #2c7fb8;
+            --green-dark: #1c5c8c;
+            --green-light: #d4e9f5;
+            --lime: #6fb3d9;
+            --border: rgba(44,127,184,.12);
+            --border-2: rgba(44,127,184,.25);
+        }
+        body[data-theme="rain"] .hero {
+            background:
+                radial-gradient(circle at 15% 15%, rgba(111,179,217,.15), transparent 30%),
+                radial-gradient(circle at 85% 25%, rgba(44,127,184,.25), transparent 30%),
+                #0a1e2e;
+        }
+        body[data-theme="rain"] .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(transparent 95%, rgba(255,255,255,.06) 100%),
+                linear-gradient(90deg, transparent 95%, rgba(255,255,255,.06) 100%);
+            background-size: 20px 20px;
+            animation: rainMove 2s linear infinite;
+            pointer-events: none;
+            opacity: .5;
+        }
+        @keyframes rainMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 20px; }
+        }
+        body[data-theme="rain"] .live-stats,
+        body[data-theme="rain"] .sms-section,
+        body[data-theme="rain"] .cta-banner,
+        body[data-theme="rain"] footer {
+            background:
+                radial-gradient(circle at 85% 20%, rgba(111,179,217,.15), transparent 30%),
+                linear-gradient(135deg, #0a1e2e, #0f2942);
+        }
+        body[data-theme="rain"] .btn-primary,
+        body[data-theme="rain"] .brand-mark {
+            background: linear-gradient(145deg, #6fb3d9, #2c7fb8);
+        }
+        body[data-theme="rain"] .num-value,
+        body[data-theme="rain"] .explain-step-num,
+        body[data-theme="rain"] .step-number {
+            background: linear-gradient(135deg, #2c7fb8, #1c5c8c);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        /* ═══════════════════════════════════════════
+           وضع الغروب (Sunset)
+        ═══════════════════════════════════════════ */
+        body[data-theme="sunset"] {
+            --bg: #fff9f5;
+            --surface: #ffffff;
+            --surface-soft: #ffeedd;
+            --dark: #2d1810;
+            --dark-2: #4a2517;
+            --text: #2d1810;
+            --muted: #8b6952;
+            --green: #e87a3f;
+            --green-dark: #c45a1e;
+            --green-light: #ffe4d1;
+            --lime: #ffb347;
+            --border: rgba(232,122,63,.12);
+            --border-2: rgba(232,122,63,.25);
+        }
+        body[data-theme="sunset"] .hero {
+            background:
+                radial-gradient(circle at 15% 15%, rgba(255,179,71,.20), transparent 35%),
+                radial-gradient(circle at 85% 25%, rgba(232,122,63,.30), transparent 40%),
+                linear-gradient(135deg, #2d1810, #4a2517);
+        }
+        body[data-theme="sunset"] .live-stats,
+        body[data-theme="sunset"] .sms-section,
+        body[data-theme="sunset"] .cta-banner,
+        body[data-theme="sunset"] footer {
+            background:
+                radial-gradient(circle at 85% 20%, rgba(255,179,71,.20), transparent 40%),
+                linear-gradient(135deg, #2d1810, #4a2517);
+        }
+        body[data-theme="sunset"] .btn-primary {
+            background: linear-gradient(145deg, #ffb347, #e87a3f);
+        }
+        body[data-theme="sunset"] .brand-mark {
+            background: linear-gradient(145deg, #ffb347, #e87a3f);
+        }
+
     </style>
 
     <script type="application/ld+json">
@@ -2649,6 +2933,32 @@
      BACK TO TOP
 ========================= -->
 
+
+<!-- ═══════════════════════════════════════════
+     THEME SWITCHER
+═══════════════════════════════════════════ -->
+<div class="theme-switcher" id="themeSwitcher">
+    <div class="theme-menu" id="themeMenu">
+        <button class="theme-option" data-theme-set="light">
+            <span class="theme-option-icon">☀️</span>
+            <span>النهار</span>
+        </button>
+        <button class="theme-option active" data-theme-set="dark">
+            <span class="theme-option-icon">🌙</span>
+            <span>الليل</span>
+        </button>
+        <button class="theme-option" data-theme-set="rain">
+            <span class="theme-option-icon">🌧️</span>
+            <span>المطر</span>
+        </button>
+        <button class="theme-option" data-theme-set="sunset">
+            <span class="theme-option-icon">🌅</span>
+            <span>الغروب</span>
+        </button>
+    </div>
+    <button class="theme-toggle-btn" id="themeToggle" aria-label="تبديل الأوضاع">🎨</button>
+</div>
+
 <button
     class="top-button"
     id="topButton"
@@ -3348,6 +3658,94 @@
         console.log('📊 أزرار الشرح:', btns.length);
         console.log('📊 نوافذ الشرح:', modals.length);
     }, 500);
+    
+})();
+</script>
+
+
+<script>
+/* ═══════════════════════════════════════════
+   THEME MANAGER
+   ═══════════════════════════════════════════ */
+(function() {
+    'use strict';
+    
+    var STORAGE_KEY = 'multistore-theme';
+    var themes = ['light', 'dark', 'rain', 'sunset'];
+    
+    function applyTheme(theme) {
+        if (themes.indexOf(theme) === -1) theme = 'light';
+        
+        if (theme === 'light') {
+            document.body.removeAttribute('data-theme');
+        } else {
+            document.body.setAttribute('data-theme', theme);
+        }
+        
+        // تحديث الحالة النشطة
+        document.querySelectorAll('.theme-option').forEach(function(btn) {
+            btn.classList.toggle('active', btn.getAttribute('data-theme-set') === theme);
+        });
+        
+        // تحديث أيقونة الزر الرئيسي
+        var icons = { light: '☀️', dark: '🌙', rain: '🌧️', sunset: '🌅' };
+        var toggle = document.getElementById('themeToggle');
+        if (toggle) toggle.textContent = icons[theme] || '🎨';
+        
+        // حفظ
+        try { localStorage.setItem(STORAGE_KEY, theme); } catch(e) {}
+    }
+    
+    function initTheme() {
+        var saved = 'light';
+        try { saved = localStorage.getItem(STORAGE_KEY) || 'light'; } catch(e) {}
+        applyTheme(saved);
+    }
+    
+    // تهيئة فورية
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTheme);
+    } else {
+        initTheme();
+    }
+    
+    // Event delegation
+    document.addEventListener('click', function(e) {
+        // فتح/إغلاق القائمة
+        if (e.target.closest('#themeToggle')) {
+            e.preventDefault();
+            var menu = document.getElementById('themeMenu');
+            if (menu) menu.classList.toggle('open');
+            return;
+        }
+        
+        // اختيار وضع
+        var opt = e.target.closest('[data-theme-set]');
+        if (opt) {
+            e.preventDefault();
+            var theme = opt.getAttribute('data-theme-set');
+            applyTheme(theme);
+            setTimeout(function() {
+                var menu = document.getElementById('themeMenu');
+                if (menu) menu.classList.remove('open');
+            }, 200);
+            return;
+        }
+        
+        // إغلاق القائمة عند الضغط خارجها
+        if (!e.target.closest('#themeSwitcher')) {
+            var menu = document.getElementById('themeMenu');
+            if (menu) menu.classList.remove('open');
+        }
+    });
+    
+    // إظهار المبدّل بعد التمرير
+    window.addEventListener('scroll', function() {
+        var sw = document.getElementById('themeSwitcher');
+        if (sw) {
+            sw.classList.toggle('visible', window.scrollY > 200);
+        }
+    }, { passive: true });
     
 })();
 </script>
